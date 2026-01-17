@@ -3,120 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teen Deen</title>
+  <title>Teen Deen - Learn Islamic Concepts Online</title>
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#ffd166">
   <link rel="apple-touch-icon" href="assets/icon.svg">
+  <meta name="description" content="Short, focused Islamic lessons designed for teens. Learn at your own pace with self-check quizzes.">
 </head>
 <body data-page="home">
   <header class="site-header">
     <nav class="navbar">
-      <div class="brand">Teen Deen</div>
-      <div class="nav-links">
-        <a href="./" aria-current="page">Home</a>
-        <a href="lessons/">Lessons</a>
-        <a href="parents.html">Parent Guide</a>
+      <div class="navbar-brand">Teen Deen</div>
+      <nav class="navbar-nav" aria-label="Primary navigation">
+        <a href="./" class="nav-pill" aria-current="page">Discover</a>
+        <a href="lessons/" class="nav-pill">Lessons</a>
+        <a href="lessons/" class="nav-pill">Quizzes</a>
+        <a href="parents.html" class="nav-pill">Parents</a>
+        <a href="./" class="nav-pill">Progress</a>
+      </nav>
+      <div class="navbar-right">
+        <button class="cta-btn" id="start-btn">Start Learning</button>
       </div>
     </nav>
   </header>
 
-  <main class="page">
-    <section class="section hero">
-      <div class="scene-wrap">
-        <svg class="scene-svg" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Playful storefront scene">
-          <defs>
-            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#e7f0ff" />
-              <stop offset="80%" stop-color="#fff3df" />
-            </linearGradient>
-          </defs>
-          <rect width="1200" height="520" fill="url(#sky)"></rect>
-          <circle cx="150" cy="120" r="70" fill="#ffd166" opacity="0.85"></circle>
-          <rect x="320" y="170" width="520" height="240" rx="30" fill="#fffaf3" stroke="#f6d1a1" stroke-width="6"></rect>
-          <path d="M320 210 L840 210" stroke="#f76c5e" stroke-width="36" stroke-linecap="round"></path>
-          <path d="M360 210 L400 260 L440 210 L480 260 L520 210 L560 260 L600 210 L640 260 L680 210 L720 260 L760 210 L800 260 L840 210" fill="#ffb86c" opacity="0.5"></path>
-          <rect x="370" y="260" width="120" height="150" rx="16" fill="#ff9f43" opacity="0.9"></rect>
-          <rect x="520" y="260" width="120" height="150" rx="16" fill="#fce6d3"></rect>
-          <rect x="670" y="260" width="120" height="150" rx="16" fill="#ffd166" opacity="0.9"></rect>
-          <rect x="400" y="190" width="380" height="22" rx="10" fill="#2f1b0f" opacity="0.08"></rect>
-          <rect x="360" y="360" width="60" height="80" rx="12" fill="#ffe7c8"></rect>
-          <rect x="780" y="340" width="40" height="60" rx="10" fill="#ffe7c8"></rect>
-          <rect x="180" y="330" width="80" height="140" rx="16" fill="#ffb86c"></rect>
-          <rect x="940" y="320" width="110" height="150" rx="20" fill="#f76c5e" opacity="0.85"></rect>
-          <circle cx="260" cy="170" r="18" fill="#ff9f43"></circle>
-          <circle cx="920" cy="190" r="12" fill="#ff9f43" opacity="0.8"></circle>
-        </svg>
-        <div class="scene-ui">
-          <div class="scene-controls">
-            <div class="menu-pill pill-label">Menu</div>
-            <div class="center">
-              <label class="search-pill" aria-label="Search lessons">
-                <span>🔍</span>
-                <input id="home-search" type="search" placeholder="Search lessons" autocomplete="off">
-              </label>
-            </div>
-            <div class="right">
-              <a class="menu-pill" href="parents.html">For Parents</a>
-            </div>
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Learn your Deen</h1>
+        <p class="hero-subtitle">Short, focused Islamic lessons designed for teens. Think critically. Track progress.</p>
+        
+        <!-- SEARCH BAR -->
+        <form class="search-form" role="search">
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input 
+              type="search" 
+              class="search-input" 
+              id="hero-search"
+              placeholder="Search lessons by topic or number"
+              autocomplete="off"
+              aria-label="Search lessons"
+            >
           </div>
-          <div class="floating-card">
-            <strong>Short, focused lessons</strong>
-            <p class="small">Learn core Islamic concepts. Check understanding. No fluff.</p>
-            <div class="button-row">
-              <a class="btn btn-primary" id="cta-start" href="lessons/">Start</a>
-              <a class="btn btn-secondary hidden" id="cta-resume" href="lessons/">Resume</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <h1 class="display-title">Learn your Deen. Think critically. Track progress.</h1>
-      <p class="subhead">Clear Islamic lessons and self-check quizzes designed for teens.</p>
-    </section>
-
-    <section class="section" aria-labelledby="progress-title">
-      <div class="section-header">
-        <h2 id="progress-title">Progress</h2>
-      </div>
-      <div id="home-progress" class="card" aria-live="polite">
-        <strong>Your progress</strong>
-        <p class="small"><span id="progress-count">0</span> lesson(s) completed.</p>
+        </form>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="featured-title">
-      <div class="section-header">
-        <h2 id="featured-title">Featured lessons</h2>
-        <a class="pill" href="lessons/">See all</a>
+    <!-- CATEGORY CHIPS -->
+    <section class="chipbar">
+      <div class="container-narrow">
+        <div class="chipbar-container" id="chip-container" role="group" aria-label="Filter by category">
+          <button class="chip active" data-category="all">All Topics</button>
+          <button class="chip" data-category="foundations">Belief</button>
+          <button class="chip" data-category="character">Character</button>
+          <button class="chip" data-category="worship">Worship</button>
+          <button class="chip" data-category="identity">Identity</button>
+          <button class="chip" data-category="social">Social Life</button>
+          <button class="chip" data-category="purpose">Purpose</button>
+        </div>
       </div>
-      <div id="home-featured" class="cards-grid" aria-live="polite"></div>
     </section>
 
-    <section class="section" aria-labelledby="parents-title">
+    <!-- LESSONS GRID -->
+    <section class="content-section" id="lessons-section">
       <div class="section-header">
-        <h2 id="parents-title">For parents &amp; guardians</h2>
+        <h2 class="section-title">Lessons</h2>
+        <div class="status-text" id="filter-status" aria-live="polite"></div>
       </div>
-      <div class="cards-grid trust-grid">
+      <div class="cards-grid" id="lessons-grid" role="region" aria-label="Lessons" aria-live="polite">
+        <div class="no-lessons">
+          <p class="no-lessons-title">Loading lessons...</p>
+          <p class="no-lessons-text">This will just take a moment.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRESS SECTION -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2 class="section-title">Your Progress</h2>
+      </div>
+      <div class="card">
+        <strong>Lessons Completed</strong>
+        <p class="card-description"><span id="progress-count">0</span> lesson(s) completed so far.</p>
+        <p class="text-hint">Keep learning to track your progress!</p>
+      </div>
+    </section>
+
+    <!-- INFO SECTION FOR PARENTS -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2 class="section-title">For Parents & Guardians</h2>
+      </div>
+      <div class="cards-grid">
         <div class="card">
-          <h3>Age-appropriate content</h3>
-          <p>Lessons are written for teens, covering core Islamic concepts clearly.</p>
+          <h3 class="text-primary">📱 Age-Appropriate</h3>
+          <p class="card-description">Lessons are written for teens, covering core Islamic concepts clearly and accessibly.</p>
         </div>
         <div class="card">
-          <h3>Privacy-first design</h3>
-          <p>No accounts, no tracking, no data collection. Everything stays local.</p>
+          <h3 class="text-primary">🔒 Privacy-First</h3>
+          <p class="card-description">No accounts, no tracking, no data collection. Everything stays local on the device.</p>
         </div>
         <div class="card">
-          <h3>Conversation starter</h3>
-          <p>Use the Parent Guide to review topics and encourage discussion.</p>
+          <h3 class="text-primary">💬 Conversation Starter</h3>
+          <p class="card-description">Use the Parent Guide to review topics and encourage meaningful discussions.</p>
         </div>
+      </div>
+      <div class="mt-xl">
+        <a href="parents.html" class="card-btn btn-inline">Read Parent Guide →</a>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    Built for teens seeking knowledge.
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>Built for teens seeking knowledge. Privacy-first. Ad-free. No tracking.</p>
+    </div>
   </footer>
 
   <script src="assets/app.js" defer></script>
+  <script src="assets/main.js" defer></script>
 </body>
 </html>

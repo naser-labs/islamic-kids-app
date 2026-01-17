@@ -3,51 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lessons | Teen Deen</title>
+  <title>Browse Lessons | Teen Deen</title>
   <link rel="stylesheet" href="../assets/styles.css">
   <link rel="manifest" href="../manifest.webmanifest">
   <meta name="theme-color" content="#ffd166">
   <link rel="apple-touch-icon" href="../assets/icon.svg">
+  <meta name="description" content="Browse all Islamic lessons for teens. Filter by category or search by topic.">
 </head>
 <body data-page="lessons">
   <header class="site-header">
     <nav class="navbar">
-      <div class="brand">Teen Deen</div>
-      <div class="nav-links">
-        <a href="../">Home</a>
-        <a href="./" aria-current="page">Lessons</a>
-        <a href="../parents.html">Parent Guide</a>
+      <div class="navbar-brand">Teen Deen</div>
+      <nav class="navbar-nav" aria-label="Primary navigation">
+        <a href="../" class="nav-pill">Discover</a>
+        <a href="./" class="nav-pill" aria-current="page">Lessons</a>
+        <a href="./" class="nav-pill">Quizzes</a>
+        <a href="../parents.html" class="nav-pill">Parents</a>
+        <a href="../" class="nav-pill">Progress</a>
+      </nav>
+      <div class="navbar-right">
+        <button class="cta-btn" id="start-btn">Start Learning</button>
       </div>
     </nav>
   </header>
 
-  <main class="page">
-    <section class="section">
-      <div class="scene-mini">
-        <div class="stack stack-narrow">
-          <div class="pill-label">Lessons</div>
-          <h1 class="display-title display-sm text-left no-margin">Browse lessons</h1>
-          <p class="subhead text-left no-margin">Search by topic or number. Most lessons take 5 minutes.</p>
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">All Lessons</h1>
+        <p class="hero-subtitle">Explore Islamic concepts at your own pace. Each lesson takes about 5 minutes.</p>
+        
+        <!-- SEARCH BAR -->
+        <form class="search-form" role="search">
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input 
+              type="search" 
+              class="search-input" 
+              id="hero-search"
+              placeholder="Search lessons by topic or number"
+              autocomplete="off"
+              aria-label="Search lessons"
+            >
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- CATEGORY CHIPS -->
+    <section class="chipbar">
+      <div class="container-narrow">
+        <div class="chipbar-container" id="chip-container" role="group" aria-label="Filter by category">
+          <button class="chip active" data-category="all">All Topics</button>
+          <button class="chip" data-category="foundations">Belief</button>
+          <button class="chip" data-category="character">Character</button>
+          <button class="chip" data-category="worship">Worship</button>
+          <button class="chip" data-category="identity">Identity</button>
+          <button class="chip" data-category="social">Social Life</button>
+          <button class="chip" data-category="purpose">Purpose</button>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="filter-row">
-        <label class="search-pill" aria-label="Search lessons">
-          <span>🔍</span>
-          <input id="lessons-search" type="search" placeholder="Search by title or topic" autocomplete="off">
-        </label>
+    <!-- LESSONS GRID -->
+    <section class="content-section" id="lessons-section">
+      <div class="section-header">
+        <h2 class="section-title">Browse</h2>
+        <div class="status-text" id="filter-status" aria-live="polite"></div>
       </div>
-      <div id="lessons-status" class="small muted"></div>
-      <div id="lesson-list" class="cards-grid" aria-live="polite"></div>
+      <div class="cards-grid" id="lessons-grid" role="region" aria-label="Lessons" aria-live="polite">
+        <div class="no-lessons">
+          <p class="no-lessons-title">Loading lessons...</p>
+          <p class="no-lessons-text">This will just take a moment.</p>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer class="footer">
-    Choose a lesson to start.
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>Choose a lesson to start learning. Track your progress as you go.</p>
+    </div>
   </footer>
 
   <script src="../assets/app.js" defer></script>
+  <script src="../assets/main.js" defer></script>
 </body>
 </html>
