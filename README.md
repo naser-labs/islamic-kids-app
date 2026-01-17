@@ -1,15 +1,17 @@
-# Islamic Kids App
+# Teen Deen
 
-A playful, static site for kids to learn about Islam with short lessons, gentle quizzes, and privacy-safe sharing.
+A privacy-first, static web app for teenagers to learn core Islamic concepts through short lessons and self-check quizzes.
+
+**Target audience:** Teens (ages 13–18)
 
 ## Structure
 
-- `index.html` — Home with storefront hero and featured lessons
-- `parents.html` — Parent guide and optional phone storage (local-only)
+- `index.html` — Home with featured lessons and progress tracking
+- `parents.html` — Parent/guardian guide
 - `lessons/index.html` — Lessons list with search
-- `lessons/lesson.html` — Single lesson view with quiz and share
-- `assets/styles.css` — Responsive storefront design system
-- `assets/app.js` — Data loading, filtering, quiz, and sharing logic
+- `lessons/lesson.html` — Single lesson view with quiz and sharing
+- `assets/styles.css` — Responsive design system
+- `assets/app.js` — Data loading, filtering, quiz logic, and sharing
 - `assets/lessons.json` — Lessons metadata
 - `.github/workflows/deploy.yml` — GitHub Pages deployment via Actions
 - `.nojekyll` — Disable Jekyll to serve assets
@@ -80,7 +82,7 @@ python -m http.server 8080
 
 - Copy Results — works everywhere
 - Email Results — mailto link with prefilled subject/body
-- Text Results — `sms:` deep link (iOS vs Android formats), optional parent phone from `localStorage`
+- Text Results — `sms:` deep link (iOS vs Android formats), optional parent/guardian phone from `localStorage`
 - Web Share — shown when `navigator.share` is available, falls back to Copy
 
 ### Local-only progress

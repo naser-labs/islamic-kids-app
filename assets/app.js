@@ -126,7 +126,7 @@
 
     function showResult(ok){
       resultEl.classList.remove('hidden');
-      resultEl.textContent = ok ? 'Nice! That’s a gentle, thoughtful choice.' : 'Almost! Try again and think about kindness and sincerity.';
+      resultEl.textContent = ok ? 'Strong understanding. Well done.' : 'Review recommended. Think about the core concepts and try again.';
     }
 
     submitBtn.onclick = () => {
@@ -158,9 +158,9 @@
 
     const pointsEl = document.getElementById('lesson-points');
     pointsEl.innerHTML = `
-      <li>Keep lessons short and positive</li>
-      <li>Ask how the topic shows up in daily life</li>
-      <li>Celebrate effort and kindness</li>`;
+      <li>Read carefully and think critically</li>
+      <li>Connect ideas to your daily life</li>
+      <li>Discuss what you learned with someone you trust</li>`;
 
     // Share buttons: Copy, Email, SMS, Web Share
     const btnCopy = document.getElementById('btn-copy');
@@ -177,13 +177,13 @@
     function buildResultsSummary({ lesson, score, total, chosen }){
       const num = lesson.number.toString().padStart(2,'0');
       const scoreLine = (score===null) ? `Score: —/${total}.` : `Score: ${score}/${total}.`;
-      const prompt = 'Ask me: What’s one thing I learned today?';
+      const prompt = 'One question to discuss: What stood out to you in this lesson?';
       // Keep under ~320 chars
-      return `Islamic Kids App — Lesson ${num}: ${lesson.title}\n${scoreLine}\n${prompt}`;
+      return `Teen Deen — Lesson ${num}: ${lesson.title}\n${scoreLine}\n${prompt}`;
     }
 
     function buildEmailLink(summary){
-      const subject = `Islamic Kids App — Lesson ${lesson.number} Results`;
+      const subject = `Teen Deen — Lesson ${lesson.number} Results`;
       const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(summary)}`;
       return mailto;
     }
@@ -243,7 +243,7 @@
         if(hasWebShare){
           btnShare.onclick = async () => {
             try {
-              await navigator.share({ title: 'Islamic Kids App', text: summary, url: location.href });
+              await navigator.share({ title: 'Teen Deen', text: summary, url: location.href });
             } catch {
               shareCopy(summary);
             }
@@ -297,7 +297,7 @@
         const listEl = document.getElementById('lesson-list');
         const { q } = getQuery();
         // Show loading state initially
-        listEl.innerHTML = '<div class="card"><strong>Loading lessons…</strong><p class="small">Please wait a moment.</p></div>';
+        listEl.innerHTML = '<div class="card"><strong>Loading lessons…</strong><p class="small">This will just take a moment.</p></div>';
         renderLessonsList(listEl, statusEl, q);
         const input = document.getElementById('lessons-search');
         input.value = q || '';
@@ -330,17 +330,17 @@
       const offline = !navigator.onLine;
       if(page === 'home'){
         const featuredEl = document.getElementById('home-featured');
-        featuredEl.innerHTML = `<div class="card error-card"><strong>${offline?'Offline':'Oops'}</strong><p>${offline?'You’re offline. Already opened content is available. Reconnect to load new lessons.':'Couldn’t load lessons right now. Please refresh.'}</p></div>`;
+        featuredEl.innerHTML = `<div class="card error-card"><strong>${offline?'Offline':'Error loading content'}</strong><p>${offline?'You're offline. Content you've already opened is still available.':'Unable to load lessons right now. Check your connection and refresh.'}</p></div>`;
       }
       if(page === 'lessons'){
         const statusEl = document.getElementById('lessons-status');
         const listEl = document.getElementById('lesson-list');
         statusEl.textContent = '';
-        listEl.innerHTML = `<div class="card error-card"><strong>${offline?'Offline':'Oops'}</strong><p>${offline?'You’re offline. Already opened content is available. Reconnect to load new lessons.':'Couldn’t load lessons right now. Please refresh.'}</p></div>`;
+        listEl.innerHTML = `<div class="card error-card"><strong>${offline?'Offline':'Error loading content'}</strong><p>${offline?'You're offline. Content you've already opened is still available.':'Unable to load lessons right now. Check your connection and refresh.'}</p></div>`;
       }
       if(page === 'lesson'){
-        document.getElementById('lesson-title').textContent = offline?'Offline':'Something went wrong';
-        document.getElementById('lesson-body').innerHTML = offline?'You\'re offline. Reconnect to load lesson content. <a href="./" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">Back to lessons</a>':'Couldn\'t load lesson data. <a href="./" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">Back to lessons</a>';
+        document.getElementById('lesson-title').textContent = offline?'Offline':'Error loading lesson';
+        document.getElementById('lesson-body').innerHTML = offline?'You\'re offline. Reconnect to load this lesson. <a href="./" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">Back to lessons</a>':'Unable to load lesson content. <a href="./" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">Back to lessons</a>';
       }
     });
   }
