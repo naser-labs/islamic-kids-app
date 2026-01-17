@@ -15,7 +15,7 @@
   const writeLastLesson = (id) => { try { localStorage.setItem('lastLessonId', id); } catch {} };
 
   async function loadLessons(){
-    const paths = ['../assets/lessons.json', './assets/lessons.json'];
+    const paths = ['../assets/lessons.json', './assets/lessons.json', 'assets/lessons.json'];
     let lastError = null;
     
     for(const path of paths){
