@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson | Islamic Kids App</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-page="lesson">
+  <header class="site-header">
+    <nav class="navbar">
+      <div class="brand">Islamic Kids App</div>
+      <div class="nav-links">
+        <a href="../">Home</a>
+        <a href="./">Lessons</a>
+        <a href="../parents.html">Parents</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="section">
+      <div class="scene-mini">
+        <div class="stack stack-narrow">
+          <div class="pill-label">Lesson</div>
+          <h1 id="lesson-title" class="display-title display-sm text-left no-margin">Loading...</h1>
+          <p id="lesson-meta" class="subhead text-left no-margin"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <article class="lesson-card">
+        <h2 class="no-margin">Overview</h2>
+        <p id="lesson-body" class="small">Loading content...</p>
+        <div id="lesson-tags" class="filter-row"></div>
+      </article>
+
+      <div id="quiz" class="quiz-card hidden">
+        <h4>Quick quiz</h4>
+        <div id="quiz-options" class="quiz-options"></div>
+        <div id="quiz-result" class="quiz-result hidden"></div>
+        <div class="button-row">
+          <button id="quiz-submit" class="btn btn-primary">Check answer</button>
+          <button id="quiz-retry" class="btn btn-secondary hidden">Try again</button>
+        </div>
+      </div>
+
+      <div class="overlay-card">
+        <h4>What you'll learn</h4>
+        <ul id="lesson-points" class="small"></ul>
+        <div class="share-row">
+          <button id="btn-copy" class="btn btn-secondary">Copy Results</button>
+          <button id="btn-email" class="btn">Email Results</button>
+          <button id="btn-sms" class="btn hidden">Text Results</button>
+          <a id="btn-back" class="btn" href="./">Back to lessons</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Keep learning with joy.
+  </footer>
+
+  <script src="../assets/app.js" defer></script>
+</body>
+</html>

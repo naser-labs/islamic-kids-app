@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Islamic Kids App</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="home">
+  <header class="site-header">
+    <nav class="navbar">
+      <div class="brand">Islamic Kids App</div>
+      <div class="nav-links">
+        <a href="./" aria-current="page">Home</a>
+        <a href="lessons/">Lessons</a>
+        <a href="parents.html">Parents</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="section hero">
+      <div class="scene-wrap">
+        <svg class="scene-svg" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Playful storefront scene">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e7f0ff" />
+              <stop offset="80%" stop-color="#fff3df" />
+            </linearGradient>
+          </defs>
+          <rect width="1200" height="520" fill="url(#sky)"></rect>
+          <circle cx="150" cy="120" r="70" fill="#ffd166" opacity="0.85"></circle>
+          <rect x="320" y="170" width="520" height="240" rx="30" fill="#fffaf3" stroke="#f6d1a1" stroke-width="6"></rect>
+          <path d="M320 210 L840 210" stroke="#f76c5e" stroke-width="36" stroke-linecap="round"></path>
+          <path d="M360 210 L400 260 L440 210 L480 260 L520 210 L560 260 L600 210 L640 260 L680 210 L720 260 L760 210 L800 260 L840 210" fill="#ffb86c" opacity="0.5"></path>
+          <rect x="370" y="260" width="120" height="150" rx="16" fill="#ff9f43" opacity="0.9"></rect>
+          <rect x="520" y="260" width="120" height="150" rx="16" fill="#fce6d3"></rect>
+          <rect x="670" y="260" width="120" height="150" rx="16" fill="#ffd166" opacity="0.9"></rect>
+          <rect x="400" y="190" width="380" height="22" rx="10" fill="#2f1b0f" opacity="0.08"></rect>
+          <rect x="360" y="360" width="60" height="80" rx="12" fill="#ffe7c8"></rect>
+          <rect x="780" y="340" width="40" height="60" rx="10" fill="#ffe7c8"></rect>
+          <rect x="180" y="330" width="80" height="140" rx="16" fill="#ffb86c"></rect>
+          <rect x="940" y="320" width="110" height="150" rx="20" fill="#f76c5e" opacity="0.85"></rect>
+          <circle cx="260" cy="170" r="18" fill="#ff9f43"></circle>
+          <circle cx="920" cy="190" r="12" fill="#ff9f43" opacity="0.8"></circle>
+        </svg>
+        <div class="scene-ui">
+          <div class="scene-controls">
+            <div class="menu-pill pill-label">Menu</div>
+            <div class="center">
+              <label class="search-pill" aria-label="Search lessons">
+                <span>🔍</span>
+                <input id="home-search" type="search" placeholder="Search lessons" autocomplete="off">
+              </label>
+            </div>
+            <div class="right">
+              <a class="menu-pill" href="parents.html">Parent Guide</a>
+            </div>
+          </div>
+          <div class="floating-card">
+            <strong>Explore daily mini-lessons</strong>
+            <p class="small">Short, gentle stories and quizzes to help kids learn with joy.</p>
+            <div class="button-row">
+              <a class="btn btn-primary" id="cta-start" href="lessons/">Start learning</a>
+              <a class="btn btn-secondary hidden" id="cta-resume" href="lessons/">Resume lesson</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h1 class="display-title">A playful path to learn and love Islam</h1>
+      <p class="subhead">Warm lessons, mini quizzes, and gentle reminders designed for young hearts.</p>
+    </section>
+
+    <section class="section" aria-labelledby="featured-title">
+      <div class="section-header">
+        <h2 id="featured-title">Featured lessons</h2>
+        <a class="pill" href="lessons/">See all</a>
+      </div>
+      <div id="home-featured" class="cards-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="section" aria-labelledby="parents-title">
+      <div class="section-header">
+        <h2 id="parents-title">Parents first</h2>
+      </div>
+      <div class="cards-grid trust-grid">
+        <div class="card">
+          <h3>Gentle and age-appropriate</h3>
+          <p>Each lesson is bite-sized and written for young learners.</p>
+        </div>
+        <div class="card">
+          <h3>Faithful content</h3>
+          <p>Topics follow a simple curriculum centered on the basics of Islam.</p>
+        </div>
+        <div class="card">
+          <h3>Built for together time</h3>
+          <p>Use the Parent Guide to review prompts and keep learning playful.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Made with care for curious kids. 💛
+  </footer>
+
+  <script src="assets/app.js" defer></script>
+</body>
+</html>

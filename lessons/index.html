@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lessons | Islamic Kids App</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-page="lessons">
+  <header class="site-header">
+    <nav class="navbar">
+      <div class="brand">Islamic Kids App</div>
+      <div class="nav-links">
+        <a href="../">Home</a>
+        <a href="./" aria-current="page">Lessons</a>
+        <a href="../parents.html">Parents</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="section">
+      <div class="scene-mini">
+        <div class="stack stack-narrow">
+          <div class="pill-label">Lessons</div>
+          <h1 class="display-title display-sm text-left no-margin">Browse playful mini-lessons</h1>
+          <p class="subhead text-left no-margin">Search by topic or number. Each lesson takes about 5 minutes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="filter-row">
+        <label class="search-pill" aria-label="Search lessons">
+          <span>🔍</span>
+          <input id="lessons-search" type="search" placeholder="Search by title or topic" autocomplete="off">
+        </label>
+      </div>
+      <div id="lessons-status" class="small muted"></div>
+      <div id="lesson-list" class="cards-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Choose a lesson to begin learning.
+  </footer>
+
+  <script src="../assets/app.js" defer></script>
+</body>
+</html>
