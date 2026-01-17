@@ -1,0 +1,16 @@
+name: Validate JSON and links
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node version
+        run: node --version
+      - name: Validate lessons.json and internal links
+        run: node scripts/validate.js

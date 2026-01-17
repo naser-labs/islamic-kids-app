@@ -62,3 +62,40 @@ Open `index.html` directly in your browser, or use a simple static server.
 python -m http.server 8080
 # Then open http://localhost:8080/index.html
 ```
+
+## PWA & Offline
+
+- Installable via the browser’s “Add to Home Screen” prompt (manifest + icons provided)
+- Offline-first caching of core pages and assets via `sw.js`
+- Safe updates with versioned cache: update `CACHE_VERSION` in `sw.js` to bust old caches
+- Friendly offline messages are shown when the network is unavailable
+
+### Files
+
+- `manifest.webmanifest` — app metadata, icons, theme colors
+- `sw.js` — service worker: caches pages/assets, updates cache on new fetches, serves offline fallback
+- `assets/icon.svg`, `assets/icon-maskable.svg` — icons for install
+
+### Share options
+
+- Copy Results — works everywhere
+- Email Results — mailto link with prefilled subject/body
+- Text Results — `sms:` deep link (iOS vs Android formats), optional parent phone from `localStorage`
+- Web Share — shown when `navigator.share` is available, falls back to Copy
+
+### Local-only progress
+
+- `localStorage`: `lastLessonId`, `completedLessons` (array), `lessonScores` (map)
+- Home shows a “Progress” card: “X lessons completed”
+
+## Validation workflow
+
+Pull requests to `main` run `scripts/validate.js` to:
+
+- Check `assets/lessons.json` schema (id, number, title, minutes, tags)
+- Check that internal links exist within the repo (ignores external links)
+
+```bash
+# Manually run validation locally
+node scripts/validate.js
+```

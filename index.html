@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Islamic Kids App</title>
   <link rel="stylesheet" href="assets/styles.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#ffd166">
+  <link rel="apple-touch-icon" href="assets/icon.svg">
 </head>
 <body data-page="home">
   <header class="site-header">
@@ -69,6 +72,16 @@
       </div>
       <h1 class="display-title">A playful path to learn and love Islam</h1>
       <p class="subhead">Warm lessons, mini quizzes, and gentle reminders designed for young hearts.</p>
+    </section>
+
+    <section class="section" aria-labelledby="progress-title">
+      <div class="section-header">
+        <h2 id="progress-title">Progress</h2>
+      </div>
+      <div id="home-progress" class="card" aria-live="polite">
+        <strong>Keep going!</strong>
+        <p class="small">You’ve completed <span id="progress-count">0</span> lesson(s).</p>
+      </div>
     </section>
 
     <section class="section" aria-labelledby="featured-title">

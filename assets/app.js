@@ -2,6 +2,7 @@
   const page = document.body.getAttribute('data-page');
   const ASSET_PREFIX = (page === 'lessons' || page === 'lesson') ? '../' : '';
   const LESSONS_URL = ASSET_PREFIX + 'assets/lessons.json';
+  const SW_URL = ASSET_PREFIX + 'sw.js';
 
   const state = {
     lessons: [],
@@ -142,10 +143,11 @@
       <li>Ask how the topic shows up in daily life</li>
       <li>Celebrate effort and kindness</li>`;
 
-    // Share buttons: Copy, Email, SMS
+    // Share buttons: Copy, Email, SMS, Web Share
     const btnCopy = document.getElementById('btn-copy');
     const btnEmail = document.getElementById('btn-email');
     const btnSms = document.getElementById('btn-sms');
+    const btnShare = document.getElementById('btn-share');
 
     function isMobileLike(){
       const ua = (navigator.userAgent||'');
@@ -214,6 +216,21 @@
           alert('Your device may not support Text sharing. Please use Copy Results.');
         }
       };
+
+      // Web Share API
+      if(btnShare){
+        const hasWebShare = !!navigator.share;
+        btnShare.classList.toggle('hidden', !hasWebShare);
+        if(hasWebShare){
+          btnShare.onclick = async () => {
+            try {
+              await navigator.share({ title: 'Islamic Kids App', text: summary, url: location.href });
+            } catch {
+              shareCopy(summary);
+            }
+          };
+        }
+      }
     }
 
     // Initialize share buttons immediately (before answering)
@@ -228,6 +245,10 @@
   }
 
   function init(){
+    // Register service worker (best-effort)
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register(SW_URL).catch(()=>{});
+    }
     state.lastLessonId = readLastLesson();
     loadLessons().then(ls => {
       state.lessons = ls;
@@ -243,6 +264,14 @@
         onSearch(homeSearch, (q)=>{
           location.href = `lessons/?q=${encodeURIComponent(q)}`;
         });
+        // Progress panel
+        const progressCountEl = document.getElementById('progress-count');
+        if(progressCountEl){
+          try {
+            const completed = JSON.parse(localStorage.getItem('completedLessons')||'[]');
+            progressCountEl.textContent = completed.length;
+          } catch { progressCountEl.textContent = '0'; }
+        }
       }
       if(page === 'lessons'){
         const statusEl = document.getElementById('lessons-status');
@@ -277,19 +306,20 @@
       }
     }).catch(err => {
       console.error(err);
+      const offline = !navigator.onLine;
       if(page === 'home'){
         const featuredEl = document.getElementById('home-featured');
-        featuredEl.innerHTML = `<div class="card error-card"><strong>Oops</strong><p>Couldn’t load lessons right now. Please refresh.</p></div>`;
+        featuredEl.innerHTML = `<div class="card error-card"><strong>${offline?'Offline':'Oops'}</strong><p>${offline?'You’re offline. Already opened content is available. Reconnect to load new lessons.':'Couldn’t load lessons right now. Please refresh.'}</p></div>`;
       }
       if(page === 'lessons'){
         const statusEl = document.getElementById('lessons-status');
         const listEl = document.getElementById('lesson-list');
         statusEl.textContent = '';
-        listEl.innerHTML = `<div class="card error-card"><strong>Oops</strong><p>Couldn’t load lessons right now. Please refresh.</p></div>`;
+        listEl.innerHTML = `<div class="card error-card"><strong>${offline?'Offline':'Oops'}</strong><p>${offline?'You’re offline. Already opened content is available. Reconnect to load new lessons.':'Couldn’t load lessons right now. Please refresh.'}</p></div>`;
       }
       if(page === 'lesson'){
-        document.getElementById('lesson-title').textContent = 'Something went wrong';
-        document.getElementById('lesson-body').textContent = 'Please go back and try again.';
+        document.getElementById('lesson-title').textContent = offline?'Offline':'Something went wrong';
+        document.getElementById('lesson-body').textContent = offline?'You’re offline. Reconnect to load lesson content.':'Please go back and try again.';
       }
     });
   }
