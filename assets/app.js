@@ -84,14 +84,14 @@
     
     if(!id){
       document.getElementById('lesson-title').textContent = 'Lesson not found';
-      document.getElementById('lesson-body').innerHTML = 'Missing lesson id. <a href=\"./\" class=\"btn btn-secondary\" style=\"margin-top:12px; display:inline-block;\">Back to lessons</a>';
+      document.getElementById('lesson-body').innerHTML = 'Missing lesson id. <a href="./" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">Back to lessons</a>';
       return;
     }
     const lesson = findLessonById(id);
     if(!lesson){
       console.error('[renderLesson] Lesson not found in manifest:', id);
       document.getElementById('lesson-title').textContent = 'Lesson not found';
-      document.getElementById('lesson-body').innerHTML = 'This lesson doesn\\'t exist or hasn\\'t loaded yet. <a href=\"./\" class=\"btn btn-secondary\" style=\"margin-top:12px; display:inline-block;\">Back to lessons</a>';
+      document.getElementById('lesson-body').innerHTML = 'This lesson doesn\'t exist or hasn\'t loaded yet. <a href="./" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">Back to lessons</a>';
       return;
     }
     
@@ -145,11 +145,14 @@
 
     const tagsEl = document.getElementById('lesson-tags');
     if (tagsEl) {
-      tagsEl.innerHTML = (lesson.tags||[]).map(t => `<span class=\"chip\">${t}</span>`).join('');
+      tagsEl.innerHTML = (lesson.tags||[]).map(t => `<span class="chip">${t}</span>`).join('');
     }
 
     // Setup quiz
     setupQuiz(lesson);
+
+    // Setup reflection section for lesson-01
+    setupReflectionSection(lesson);
 
     // Setup key takeaways
     const pointsEl = document.getElementById('lesson-points');
@@ -168,6 +171,19 @@
     }
   }
 
+  function setupReflectionSection(lesson) {
+    const reflectSection = document.getElementById('reflect-section');
+    if (!reflectSection) return;
+
+    // Show reflection section for lesson-01
+    if (lesson.id === 'lesson-01') {
+      reflectSection.style.display = 'block';
+      console.log('[Reflection] Section enabled for lesson-01');
+    } else {
+      reflectSection.style.display = 'none';
+    }
+  }
+
   function setupQuiz(lesson) {
     const quizSection = document.getElementById('quiz-section');
     const optionsEl = document.getElementById('quiz-options');
@@ -175,6 +191,7 @@
     const submitBtn = document.getElementById('quiz-submit');
     const retryBtn = document.getElementById('quiz-retry');
 
+    // Always show quiz section
     if (quizSection) quizSection.style.display = 'block';
 
     let quizScore = null;
@@ -183,7 +200,7 @@
     if (optionsEl) {
       if (lesson.id === 'lesson-01') {
         totalQuestions = 5;
-        optionsEl.innerHTML = '<p style=\"color: var(--color-text-muted); font-style: italic;\">Loading interactive quiz...</p>';
+        optionsEl.innerHTML = '<p style="color: var(--color-text-muted); font-style: italic;">Loading interactive quiz...</p>';
         console.log('[Quiz] Rendered placeholder for lesson-01, interactive script will take over');
         return; // Interactive script will handle lesson-01
       } else {
@@ -193,9 +210,9 @@
           {id:'b', text:'A harmful habit'},
           {id:'c', text:'A random guess'}
         ].map((o) => `
-          <label class=\"quiz-choice-label\">
-            <input type=\"radio\" name=\"quiz\" value=\"${o.id}\" style=\"width: 20px; height: 20px; cursor: pointer; margin: 0; flex-shrink: 0;\">
-            <span style=\"font-size: var(--text-base);\">${o.text}</span>
+          <label class="quiz-choice-label">
+            <input type="radio" name="quiz" value="${o.id}" style="width: 20px; height: 20px; cursor: pointer; margin: 0; flex-shrink: 0;">
+            <span style="font-size: var(--text-base);">${o.text}</span>
           </label>`).join('');
       }
     }
@@ -211,7 +228,7 @@
 
     if (submitBtn) {
       submitBtn.onclick = () => {
-        const chosen = (document.querySelector('input[name=\"quiz\"]:checked')||{}).value;
+        const chosen = (document.querySelector('input[name="quiz"]:checked')||{}).value;
         if(!chosen){ 
           if (resultEl){ 
             resultEl.classList.remove('hidden'); 
@@ -277,7 +294,7 @@
           resultEl.classList.add('hidden'); 
           resultEl.style.display = 'none'; 
         }
-        const checked = document.querySelector('input[name=\"quiz\"]:checked');
+        const checked = document.querySelector('input[name="quiz"]:checked');
         if (checked) checked.checked = false;
         retryBtn.classList.add('hidden');
         retryBtn.style.display = 'none';
@@ -308,7 +325,7 @@
           const lessonTitle = document.getElementById('lesson-title');
           const lessonBody = document.getElementById('lesson-body');
           if (lessonTitle) lessonTitle.textContent = 'Error rendering lesson';
-          if (lessonBody) lessonBody.innerHTML = `<p>An error occurred while loading the lesson.</p><p><strong>${err.message}</strong></p><a href=\"./\" class=\"cta-btn\" style=\"display: inline-block; margin-top: 12px;\">Back to Lessons</a>`;
+          if (lessonBody) lessonBody.innerHTML = `<p>An error occurred while loading the lesson.</p><p><strong>${err.message}</strong></p><a href="./" class="cta-btn" style="display: inline-block; margin-top: 12px;">Back to Lessons</a>`;
         }
       }
       
