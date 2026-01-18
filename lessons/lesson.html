@@ -59,7 +59,8 @@
         <h2 class="section-title">Check Your Understanding</h2>
       </div>
       <div class="card">
-        <div id="quiz-options" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;"></div>
+        <!-- Quiz options container - exists immediately in DOM -->
+        <div id="quiz-options"></div>
         <div id="quiz-result" class="hidden" style="padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px; background: var(--color-bg-warm);"></div>
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
           <button id="quiz-submit" class="cta-btn">Check Answer</button>
@@ -123,11 +124,12 @@
     </div>
   </footer>
 
-  <!-- Core Scripts -->
+  <!-- Core Scripts - lesson-01-interactive MUST run before app.js -->
   <script src="../assets/progress.js"></script>
   <script src="../assets/confetti.js"></script>
   <script src="../assets/tts.js"></script>
   <script src="../assets/certificate.js"></script>
   <script src="../assets/lesson-01-interactive.js"></script>
+  <script src="../assets/main.js"></script>
   <script src="../assets/app.js"></script>
 </invoke>
