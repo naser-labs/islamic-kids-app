@@ -18,6 +18,11 @@
     currentLesson: null
   };
 
+  // Lesson audio mapping
+  const lessonAudio = {
+    'lesson-01': 'lesson-01-intentions.mp3'
+  };
+
   const readLastLesson = () => {
     try { return localStorage.getItem('lastLessonId'); } catch { return null; }
   };
@@ -77,6 +82,40 @@
     };
   }
 
+  function renderAudioPlayer(lessonId) {
+    const container = document.getElementById('audio-player-container');
+    if (!container) return;
+
+    const audioFile = lessonAudio[lessonId];
+    if (!audioFile) {
+      container.innerHTML = '';
+      return;
+    }
+
+    // Build audio src with proper base path handling
+    let audioSrc;
+    if (window.withBase && typeof window.withBase === 'function') {
+      audioSrc = window.withBase(`audio/${audioFile}`);
+    } else {
+      const base = window.BASE_PATH || '/islamic-kids-app';
+      audioSrc = `${base}/audio/${audioFile}`;
+    }
+
+    console.log('[Audio] Loading audio from:', audioSrc);
+
+    container.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+        <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 1.025em; color: var(--color-text);">
+          🎧 Listen to Lesson
+        </label>
+        <audio controls preload="none" style="width: 100%; max-width: 100%; height: 40px; border-radius: var(--radius-md); font-family: inherit;">
+          <source src="${audioSrc}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    `;
+  }
+
   function renderLesson(){
     const { id } = getQuery();
     console.log('[renderLesson] Attempting to load lesson id:', id);
@@ -102,6 +141,9 @@
     document.getElementById('lesson-title').textContent = `${lesson.number}. ${lesson.title}`;
     document.getElementById('lesson-meta').textContent = `${lesson.minutes} min • ${lesson.tags.join(', ')}`;
     
+    // Render audio player if available
+    renderAudioPlayer(lesson.id);
+
     // Build content URL with fallback
     let contentUrl;
     if (window.withBase && typeof window.withBase === 'function') {
