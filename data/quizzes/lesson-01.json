@@ -1,136 +1,71 @@
 {
   "lessonId": "lesson-01",
-  "title": "Lesson 1 Quiz: Actions Are By Intentions",
+  "title": "Lesson 1 Quiz: The Power of Intention",
   "questions": [
     {
       "id": "l1-q1",
       "type": "multiple-choice",
-      "question": "According to the hadith, what determines the value of an action?",
+      "question": "According to this lesson, what is the FIRST thing that matters before any action in Islam?",
       "choices": [
-        "How big or public the action is",
-        "The intention behind the action",
-        "How many people praise it",
-        "How hard the action feels"
+        "How hard the action is",
+        "How many people see it",
+        "Your intention (niyyah)",
+        "How long the action takes"
       ],
-      "correctIndex": 1,
-      "explanation": "The Prophet ﷺ taught: actions are judged by intentions, and everyone gets what they intended."
+      "correctIndex": 2,
+      "explanation": "Islam teaches that intention comes before action. Allah looks at why you act before what you do."
     },
     {
       "id": "l1-q2",
       "type": "multiple-choice",
-      "question": "In the migration example, why was one person’s migration considered for Allah and His Messenger?",
+      "question": "Why can two people do the same action but only one be rewarded by Allah?",
       "choices": [
-        "Because it was more far away",
-        "Because he moved with friends",
-        "Because his intention was for Allah and His Messenger",
-        "Because he posted about it"
+        "Because one works harder",
+        "Because one does it in public",
+        "Because their intentions are different",
+        "Because Allah rewards randomly"
       ],
       "correctIndex": 2,
-      "explanation": "The hadith shows the same action can differ in reward based on intention: for Allah vs. for worldly reasons."
+      "explanation": "The reward depends on intention, not just the action itself."
     },
     {
       "id": "l1-q3",
       "type": "multiple-choice",
-      "question": "What does the lesson say Allah looks at first?",
+      "question": "What did the Prophet Muhammad ﷺ teach in the hadith mentioned in this lesson?",
       "choices": [
-        "Your followers",
-        "Your heart (intention)",
-        "Your grades",
-        "Your schedule"
+        "Actions are judged by results",
+        "Actions are judged by intentions",
+        "Only big actions matter",
+        "Intentions are less important than actions"
       ],
       "correctIndex": 1,
-      "explanation": "Allah looks at your heart before He looks at your actions."
+      "explanation": "The Prophet ﷺ said: 'Actions are only judged by intentions.'"
     },
     {
       "id": "l1-q4",
       "type": "multiple-choice",
-      "question": "If you do a good deed mainly to be seen and praised, what is the outcome?",
+      "question": "What can quietly destroy good deeds, even prayer or charity?",
       "choices": [
-        "You get full reward from Allah",
-        "You only get people’s praise",
-        "You automatically get a badge",
-        "It counts as worship no matter what"
+        "Forgetting the rules",
+        "Being tired",
+        "Showing off (riya')",
+        "Making mistakes"
       ],
-      "correctIndex": 1,
-      "explanation": "Doing good for show brings only people’s praise. Real reward depends on sincerity for Allah."
+      "correctIndex": 2,
+      "explanation": "Showing off removes sincerity and can cancel reward."
     },
     {
       "id": "l1-q5",
       "type": "multiple-choice",
-      "question": "Why did many scholars place this hadith at the beginning of their books?",
+      "question": "What should you do before praying or doing a good deed?",
       "choices": [
-        "It’s short and easy to memorize",
-        "To remind readers that intention comes first",
-        "They didn’t have other hadiths",
-        "Because it was trending"
-      ],
-      "correctIndex": 1,
-      "explanation": "Scholars wanted to emphasize that the intention is foundational—without it, actions lose value."
-    },
-    {
-      "id": "l1-q6",
-      "type": "multiple-choice",
-      "question": "Which Qur’an message aligns with this lesson?",
-      "choices": [
-        "Do actions only in public",
-        "Islam is about sincerity and worshipping Allah alone",
-        "Seek praise from people",
-        "Hide your faith always"
-      ],
-      "correctIndex": 1,
-      "explanation": "Qur’an verses in the lesson stress sincere worship of Allah alone—not for show."
-    },
-    {
-      "id": "l1-q7",
-      "type": "multiple-choice",
-      "question": "What dangerous habit can quietly destroy good deeds?",
-      "choices": [
-        "Sleeping early",
-        "Riya’ (showing off)",
-        "Studying Islam",
-        "Helping others"
-      ],
-      "correctIndex": 1,
-      "explanation": "The lesson warns about riya’—doing good deeds to impress people instead of pleasing Allah."
-    },
-    {
-      "id": "l1-q8",
-      "type": "multiple-choice",
-      "question": "Which everyday check helps keep sincerity?",
-      "choices": [
-        "Ask: ‘Who will like this?’",
-        "Ask: ‘Who am I really doing this for?’",
-        "Post it first, think later",
-        "Wait until you feel motivated"
-      ],
-      "correctIndex": 1,
-      "explanation": "The lesson’s practical advice: pause and ask who you’re doing it for—make it for Allah."
-    },
-    {
-      "id": "l1-q9",
-      "type": "multiple-choice",
-      "question": "Pick the sincere intention for praying:",
-      "choices": [
-        "Because people might be watching",
-        "To impress relatives",
-        "Because Allah deserves worship",
-        "To get more likes"
+        "Check your phone",
+        "Make sure people notice",
+        "Pause and check your intention",
+        "Wait until later"
       ],
       "correctIndex": 2,
-      "explanation": "Prayer is sincere when done because Allah deserves worship—not for people’s eyes."
-    },
-    {
-      "id": "l1-q10",
-      "type": "multiple-choice",
-      "question": "Which statement best summarizes the lesson’s key takeaway?",
-      "choices": [
-        "Actions matter even with wrong intentions",
-        "Intention transforms normal actions into worship",
-        "Only big actions count",
-        "Small actions don’t matter"
-      ],
-      "correctIndex": 1,
-      "explanation": "Your intention is what turns everyday actions into worship and brings reward from Allah."
+      "explanation": "The lesson teaches us to pause and ask who we are really doing the action for."
     }
   ]
 }
