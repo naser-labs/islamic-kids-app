@@ -1,12 +1,50 @@
 /**
  * LESSON 01 INTERACTIVE - Quiz, Reflect, and Sharing
- * Simplified version with aggressive initialization
+ * Renders immediately - quiz-options div already exists in DOM
  */
 
 (function() {
   'use strict';
 
-  console.log('[Lesson 01 Interactive] Script executing immediately');
+  console.log('[Lesson 01] Script loaded');
+
+  // Wait for DOM to be ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  function init() {
+    console.log('[Lesson 01] Initializing...');
+    
+    // Check if this is lesson-01
+    const params = new URLSearchParams(window.location.search);
+    const lessonId = params.get('id');
+    
+    console.log('[Lesson 01] Current lesson ID:', lessonId);
+    
+    if (lessonId !== 'lesson-01') {
+      console.log('[Lesson 01] Not lesson-01, exiting');
+      return;
+    }
+    
+    console.log('[Lesson 01] This IS lesson-01! Rendering quiz...');
+    
+    // quiz-options should already exist in the DOM
+    const quizOptions = document.getElementById('quiz-options');
+    
+    if (!quizOptions) {
+      console.error('[Lesson 01] ERROR: quiz-options element not found in DOM!');
+      return;
+    }
+    
+    console.log('[Lesson 01] Found quiz-options, rendering now');
+    
+    renderQuiz();
+    initReflectSection();
+    loadSavedData();
+  }
 
   // Quiz configuration
   const QUIZ_CONFIG = {
@@ -84,53 +122,10 @@
     passed: false
   };
 
-  // Start checking immediately and continuously
-  let attempts = 0;
-  const checkInterval = setInterval(() => {
-    attempts++;
-    console.log('[Lesson 01 Interactive] Checking... attempt', attempts);
-    
-    // Check if this is lesson-01
-    const params = new URLSearchParams(window.location.search);
-    const lessonId = params.get('id');
-    
-    if (lessonId !== 'lesson-01') {
-      console.log('[Lesson 01 Interactive] Not lesson-01 (detected:', lessonId, '), will keep checking...');
-      if (attempts > 20) {
-        clearInterval(checkInterval);
-        console.log('[Lesson 01 Interactive] Gave up - not lesson-01');
-      }
-      return;
-    }
-    
-    console.log('[Lesson 01 Interactive] This IS lesson-01! Looking for quiz-options...');
-    
-    // Look for quiz-options element
-    const quizOptions = document.getElementById('quiz-options');
-    
-    if (!quizOptions) {
-      console.log('[Lesson 01 Interactive] quiz-options not found yet...');
-      if (attempts > 200) {
-        clearInterval(checkInterval);
-        console.error('[Lesson 01 Interactive] TIMEOUT - quiz-options never appeared');
-      }
-      return;
-    }
-    
-    // Found it!
-    clearInterval(checkInterval);
-    console.log('[Lesson 01 Interactive] SUCCESS! Found quiz-options, rendering now...');
-    
-    renderQuiz();
-    initReflectSection();
-    loadSavedData();
-    
-  }, 50);
-
   function renderQuiz() {
     const quizOptions = document.getElementById('quiz-options');
     if (!quizOptions) {
-      console.error('[renderQuiz] quiz-options disappeared!');
+      console.error('[renderQuiz] quiz-options not found!');
       return;
     }
 
