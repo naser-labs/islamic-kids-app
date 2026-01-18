@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="site-base" content="/islamic-kids-app">
   <title>Parent Guide | Teen Deen</title>
   <link rel="stylesheet" href="assets/styles.css">
@@ -22,10 +22,31 @@
         <a href="parents.html" class="nav-pill" aria-current="page">Parents</a>
         <a href="progress.html" class="nav-pill">Progress</a>
       </nav>
+      <button class="navbar-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span>
+          <div></div>
+        </span>
+      </button>
       <div class="navbar-right">
         <a href="lessons/" class="cta-btn">Browse Lessons</a>
       </div>
     </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="navbar-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="navbar-drawer-content">
+        <div class="navbar-drawer-header">
+          <span style="font-weight: 600; color: var(--color-text);">Menu</span>
+          <button class="navbar-drawer-close" aria-label="Close menu">✕</button>
+        </div>
+        <nav class="navbar-drawer-nav" aria-label="Primary navigation">
+          <a href="./" class="nav-pill">Discover</a>
+          <a href="lessons/" class="nav-pill">Lessons</a>
+          <a href="parents.html" class="nav-pill" aria-current="page">Parents</a>
+          <a href="progress.html" class="nav-pill">Progress</a>
+        </nav>
+      </div>
+    </div>
   </header>
 
   <main>
@@ -120,6 +141,7 @@
     </div>
   </footer>
 
+  <script src="assets/mobile-nav.js"></script>
   <script src="assets/app.js" defer></script>
 </body>
 </html>
