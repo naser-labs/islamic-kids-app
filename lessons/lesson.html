@@ -54,7 +54,7 @@
     </section>
 
     <!-- QUIZ SECTION -->
-    <section class="content-section" id="quiz-section" style="display: none;">
+    <section class="content-section" id="quiz-section">
       <div class="section-header">
         <h2 class="section-title">Check Your Understanding</h2>
       </div>
@@ -65,6 +65,41 @@
           <button id="quiz-submit" class="cta-btn">Check Answer</button>
           <button id="quiz-retry" class="btn-inline hidden" style="background: var(--color-surface); border: 1px solid var(--color-border);">Try Again</button>
         </div>
+      </div>
+    </section>
+
+    <!-- REFLECTION SECTION (for interactive lessons like lesson-01) -->
+    <section class="content-section" id="reflect-section" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">Reflect & Apply</h2>
+      </div>
+      <div class="card">
+        <p style="margin-bottom: 16px; color: var(--color-text-muted);">
+          Take a moment to think about how this lesson applies to your life.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div>
+            <label style="display: block; margin-bottom: 8px; font-weight: 600;">
+              What's one action you can improve your intention for?
+            </label>
+            <textarea 
+              style="width: 100%; min-height: 100px; padding: 12px; border: 2px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit; font-size: 1em; resize: vertical;"
+              placeholder="Write your thoughts here..."
+            ></textarea>
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 8px; font-weight: 600;">
+              How can you remind yourself to check your intentions?
+            </label>
+            <textarea 
+              style="width: 100%; min-height: 100px; padding: 12px; border: 2px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit; font-size: 1em; resize: vertical;"
+              placeholder="Write your thoughts here..."
+            ></textarea>
+          </div>
+        </div>
+        <p style="margin-top: 16px; font-size: 0.9em; color: var(--color-text-muted); font-style: italic;">
+          💾 Your responses are saved automatically to your device.
+        </p>
       </div>
     </section>
 
