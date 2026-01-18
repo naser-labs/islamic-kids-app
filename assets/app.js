@@ -1,5 +1,8 @@
 /**
  * APP.JS - Enhanced lesson loading with progress tracking and interactive features
+ * 
+ * IMPORTANT: For lesson-01, the lesson-01-interactive.js script handles quiz rendering.
+ * This script must NOT interfere with that process.
  */
 
 (function(){
@@ -148,10 +151,27 @@
       tagsEl.innerHTML = (lesson.tags||[]).map(t => `<span class="chip">${t}</span>`).join('');
     }
 
-    // Setup quiz - but give interactive scripts a chance to run first
-    setTimeout(() => {
-      setupQuiz(lesson);
-    }, 100);
+    // Setup quiz - but SKIP for lesson-01 as interactive script handles it
+    // For lesson-01: DO NOT call setupQuiz at all
+    if (lesson.id === 'lesson-01') {
+      console.log('[Quiz] Skipping generic quiz setup - lesson-01-interactive.js handles this');
+      // The interactive script has already run by now (it loads before app.js)
+      // Just verify it rendered properly
+      setTimeout(() => {
+        const optionsEl = document.getElementById('quiz-options');
+        if (optionsEl && optionsEl.children.length === 0) {
+          console.error('[Quiz] WARNING: lesson-01-interactive.js did not render quiz!');
+          console.error('[Quiz] Check browser console for errors from lesson-01-interactive.js');
+        } else {
+          console.log('[Quiz] Verified: lesson-01 quiz rendered successfully');
+        }
+      }, 200);
+    } else {
+      // For all other lessons, setup generic quiz after short delay
+      setTimeout(() => {
+        setupQuiz(lesson);
+      }, 100);
+    }
 
     // Setup reflection section for lesson-01
     setupReflectionSection(lesson);
@@ -186,12 +206,18 @@
     }
   }
 
+  /**
+   * Setup generic quiz for non-interactive lessons
+   * NOTE: This function is NOT called for lesson-01
+   */
   function setupQuiz(lesson) {
     const quizSection = document.getElementById('quiz-section');
     const optionsEl = document.getElementById('quiz-options');
     const resultEl = document.getElementById('quiz-result');
     const submitBtn = document.getElementById('quiz-submit');
     const retryBtn = document.getElementById('quiz-retry');
+
+    console.log('[setupQuiz] Setting up generic quiz for:', lesson.id);
 
     // Always show quiz section
     if (quizSection) quizSection.style.display = 'block';
@@ -200,38 +226,17 @@
     let totalQuestions = 1;
 
     if (optionsEl) {
-      // Check if lesson-01 interactive script already handled the quiz
-      if (lesson.id === 'lesson-01') {
-        // Check if the interactive script has already rendered content
-        if (optionsEl.children.length > 0 && 
-            !optionsEl.innerHTML.includes('Loading interactive quiz')) {
-          console.log('[Quiz] Interactive quiz already rendered for lesson-01');
-          return;
-        }
-        
-        // If not, show a better loading message and let interactive script take over
-        totalQuestions = 5;
-        optionsEl.innerHTML = `
-          <div style="text-align: center; padding: 40px 20px; color: var(--color-text-muted);">
-            <div style="font-size: 2em; margin-bottom: 16px;">📝</div>
-            <p style="font-style: italic; margin-bottom: 8px;">Loading interactive quiz...</p>
-            <p style="font-size: 0.9em;">If this takes more than a few seconds, try refreshing the page.</p>
-          </div>
-        `;
-        console.log('[Quiz] Waiting for interactive script to render lesson-01 quiz');
-        return;
-      } else {
-        totalQuestions = 1;
-        optionsEl.innerHTML = [
-          {id:'a', text:'A kind action'},
-          {id:'b', text:'A harmful habit'},
-          {id:'c', text:'A random guess'}
-        ].map((o) => `
-          <label class="quiz-choice-label">
-            <input type="radio" name="quiz" value="${o.id}" style="width: 20px; height: 20px; cursor: pointer; margin: 0; flex-shrink: 0;">
-            <span style="font-size: var(--text-base);">${o.text}</span>
-          </label>`).join('');
-      }
+      // Generic quiz with simple multiple choice
+      totalQuestions = 1;
+      optionsEl.innerHTML = [
+        {id:'a', text:'A kind action'},
+        {id:'b', text:'A harmful habit'},
+        {id:'c', text:'A random guess'}
+      ].map((o) => `
+        <label class="quiz-choice-label">
+          <input type="radio" name="quiz" value="${o.id}" style="width: 20px; height: 20px; cursor: pointer; margin: 0; flex-shrink: 0;">
+          <span style="font-size: var(--text-base);">${o.text}</span>
+        </label>`).join('');
     }
 
     function showResult(score, total){
