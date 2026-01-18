@@ -1,8 +1,7 @@
 /**
  * APP.JS - Enhanced lesson loading with progress tracking and interactive features
  * 
- * IMPORTANT: For lesson-01, the lesson-01-interactive.js script handles quiz rendering.
- * This script must NOT interfere with that process.
+ * IMPORTANT: Quiz rendering is handled by assets/quiz.js (TeenDeenQuiz)
  */
 
 (function(){
@@ -27,9 +26,6 @@
     try { localStorage.setItem('lastLessonId', id); } catch {} 
   };
 
-  /**
-   * Load lessons manifest using base path resolver
-   */
   async function loadLessons() {
     let manifestUrl;
     if (window.withBase && typeof window.withBase === 'function') {
@@ -151,177 +147,29 @@
       tagsEl.innerHTML = (lesson.tags||[]).map(t => `<span class="chip">${t}</span>`).join('');
     }
 
-    // Setup quiz - but SKIP for lesson-01 as interactive script handles it
-    // For lesson-01: DO NOT call setupQuiz at all
-    if (lesson.id === 'lesson-01') {
-      console.log('[Quiz] Skipping generic quiz setup - lesson-01-interactive.js handles this');
-      // The interactive script has already run by now (it loads before app.js)
-      // Just verify it rendered properly
-      setTimeout(() => {
-        const optionsEl = document.getElementById('quiz-options');
-        if (optionsEl && optionsEl.children.length === 0) {
-          console.error('[Quiz] WARNING: lesson-01-interactive.js did not render quiz!');
-          console.error('[Quiz] Check browser console for errors from lesson-01-interactive.js');
-        } else {
-          console.log('[Quiz] Verified: lesson-01 quiz rendered successfully');
-        }
-      }, 200);
-    } else {
-      // For all other lessons, setup generic quiz after short delay
-      setTimeout(() => {
-        setupQuiz(lesson);
-      }, 100);
-    }
-
-    // Setup reflection section for lesson-01
-    setupReflectionSection(lesson);
+    // Delegate to shared quiz module
+    setTimeout(() => {
+      if (window.TeenDeenQuiz && typeof window.TeenDeenQuiz.initialize === 'function') {
+        window.TeenDeenQuiz.initialize(lesson);
+      } else {
+        console.warn('[Quiz] TeenDeenQuiz not available; no quiz will be rendered.');
+      }
+    }, 150);
 
     // Setup key takeaways
     const pointsEl = document.getElementById('lesson-points');
     if (pointsEl) {
       if (lesson.id === 'lesson-01') {
         pointsEl.innerHTML = `
-          <li>Actions are judged by intentions — sincerity matters most.</li>
-          <li>Do good for Allah, not for likes or attention.</li>
-          <li>Build the habit of checking your intention before and during any deed.</li>`;
+          <li>Allah is Al-Khaliq — The Creator of everything.</li>
+          <li>You were created to worship Allah and live with purpose.</li>
+          <li>Sincerity matters: keep your intention for Allah, not people.</li>`;
       } else {
         pointsEl.innerHTML = `
           <li>Read carefully and think critically</li>
           <li>Connect ideas to your daily life</li>
           <li>Discuss what you learned with someone you trust</li>`;
       }
-    }
-  }
-
-  function setupReflectionSection(lesson) {
-    const reflectSection = document.getElementById('reflect-section');
-    if (!reflectSection) return;
-
-    // Show reflection section for lesson-01
-    if (lesson.id === 'lesson-01') {
-      reflectSection.style.display = 'block';
-      console.log('[Reflection] Section enabled for lesson-01');
-    } else {
-      reflectSection.style.display = 'none';
-    }
-  }
-
-  /**
-   * Setup generic quiz for non-interactive lessons
-   * NOTE: This function is NOT called for lesson-01
-   */
-  function setupQuiz(lesson) {
-    const quizSection = document.getElementById('quiz-section');
-    const optionsEl = document.getElementById('quiz-options');
-    const resultEl = document.getElementById('quiz-result');
-    const submitBtn = document.getElementById('quiz-submit');
-    const retryBtn = document.getElementById('quiz-retry');
-
-    console.log('[setupQuiz] Setting up generic quiz for:', lesson.id);
-
-    // Always show quiz section
-    if (quizSection) quizSection.style.display = 'block';
-
-    let quizScore = null;
-    let totalQuestions = 1;
-
-    if (optionsEl) {
-      // Generic quiz with simple multiple choice
-      totalQuestions = 1;
-      optionsEl.innerHTML = [
-        {id:'a', text:'A kind action'},
-        {id:'b', text:'A harmful habit'},
-        {id:'c', text:'A random guess'}
-      ].map((o) => `
-        <label class="quiz-choice-label">
-          <input type="radio" name="quiz" value="${o.id}" style="width: 20px; height: 20px; cursor: pointer; margin: 0; flex-shrink: 0;">
-          <span style="font-size: var(--text-base);">${o.text}</span>
-        </label>`).join('');
-    }
-
-    function showResult(score, total){
-      if (!resultEl) return;
-      resultEl.classList.remove('hidden');
-      resultEl.style.display = 'block';
-      const ok = score === total;
-      resultEl.textContent = `Score: ${score}/${total} ${ok ? '✓ Great job — fully correct.' : 'Keep going — review the lesson and try again.'}`;
-      resultEl.style.color = ok ? 'var(--color-primary)' : 'var(--color-secondary)';
-    }
-
-    if (submitBtn) {
-      submitBtn.onclick = () => {
-        const chosen = (document.querySelector('input[name="quiz"]:checked')||{}).value;
-        if(!chosen){ 
-          if (resultEl){ 
-            resultEl.classList.remove('hidden'); 
-            resultEl.style.display='block'; 
-            resultEl.textContent='Please choose an option.'; 
-            resultEl.style.color='var(--color-secondary)'; 
-          } 
-          return; 
-        }
-        
-        const correct = chosen === 'a';
-        quizScore = correct ? 1 : 0;
-        showResult(quizScore, 1);
-        
-        if (retryBtn) { 
-          retryBtn.classList.toggle('hidden', correct); 
-          retryBtn.style.display = correct ? 'none' : 'inline-block'; 
-        }
-        
-        // Save to legacy storage
-        try {
-          const completed = new Set(JSON.parse(localStorage.getItem('completedLessons')||'[]'));
-          completed.add(lesson.id);
-          localStorage.setItem('completedLessons', JSON.stringify(Array.from(completed)));
-          const scores = JSON.parse(localStorage.getItem('lessonScores')||'{}');
-          scores[lesson.id] = { score: quizScore, total: 1, ts: Date.now() };
-          localStorage.setItem('lessonScores', JSON.stringify(scores));
-        } catch {}
-
-        // Update progress tracking
-        if (window.TeenDeenProgress) {
-          window.TeenDeenProgress.completeLesson(lesson.id, quizScore, totalQuestions);
-        }
-
-        // Celebrate if passed
-        if (correct && window.TeenDeenConfetti) {
-          setTimeout(() => window.TeenDeenConfetti.celebrate(), 300);
-        }
-
-        // Show certificate if passed
-        if (quizScore === 1 && window.TeenDeenCertificate) {
-          try {
-            const passed = window.TeenDeenCertificate.checkIfPassed(lesson.id, quizScore, 1);
-            if (passed) {
-              window.TeenDeenCertificate.renderCertificatePanel({
-                lessonId: lesson.id,
-                lessonTitle: lesson.title,
-                score: quizScore,
-                total: 1,
-                passed: true
-              });
-            }
-          } catch (certErr) {
-            console.warn('[Certificate] Error:', certErr);
-          }
-        }
-      };
-    }
-
-    if (retryBtn) {
-      retryBtn.onclick = () => {
-        if (resultEl) { 
-          resultEl.classList.add('hidden'); 
-          resultEl.style.display = 'none'; 
-        }
-        const checked = document.querySelector('input[name="quiz"]:checked');
-        if (checked) checked.checked = false;
-        retryBtn.classList.add('hidden');
-        retryBtn.style.display = 'none';
-        quizScore = null;
-      };
     }
   }
 
@@ -385,18 +233,18 @@
       if (page !== 'lesson') {
         const errorMsg = err.message || 'Unknown error';
         console.error(`Could not load lessons: ${errorMsg}`);
+        const grid = document.getElementById('lessons-grid');
+        if (grid) {
+          grid.innerHTML = `
+            <div class="no-lessons">
+              <p class="no-lessons-title">Error loading lessons</p>
+              <p class="no-lessons-text">Please refresh the page. If the problem persists, check your connection.</p>
+            </div>
+          `;
+        }
       }
     });
   }
-
-  // Listen for badge events
-  window.addEventListener('teendeen:badge-earned', (e) => {
-    console.log('[Badge] Earned:', e.detail);
-    if (window.TeenDeenConfetti) {
-      window.TeenDeenConfetti.celebrate();
-    }
-    // Could show toast notification here
-  });
 
   // Start the app when DOM is ready
   if(document.readyState === 'loading'){
