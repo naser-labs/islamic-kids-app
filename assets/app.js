@@ -24,9 +24,15 @@
    * Load lessons manifest using base path resolver
    */
   async function loadLessons() {
-    const manifestUrl = window.withBase ? 
-      window.withBase('data/lessons.json') : 
-      'data/lessons.json';
+    // Ensure we have the correct path
+    let manifestUrl;
+    if (window.withBase && typeof window.withBase === 'function') {
+      manifestUrl = window.withBase('data/lessons.json');
+    } else {
+      // Fallback: construct URL manually
+      const base = window.BASE_PATH || '/islamic-kids-app';
+      manifestUrl = `${base}/data/lessons.json`;
+    }
     
     try {
       console.log('[loadLessons] Fetching from:', manifestUrl);
@@ -94,8 +100,18 @@
     writeLastLesson(id);
     document.getElementById('lesson-title').textContent = `${lesson.number}. ${lesson.title}`;
     document.getElementById('lesson-meta').textContent = `${lesson.minutes} min • ${lesson.tags.join(', ')}`;
-    // Try to load lesson content from a partial HTML if available
-    const contentUrl = window.withBase ? window.withBase(`lessons/content/${lesson.id}.html`) : `lessons/content/${lesson.id}.html`;
+    
+    // Build content URL with fallback
+    let contentUrl;
+    if (window.withBase && typeof window.withBase === 'function') {
+      contentUrl = window.withBase(`lessons/content/${lesson.id}.html`);
+    } else {
+      const base = window.BASE_PATH || '/islamic-kids-app';
+      contentUrl = `${base}/lessons/content/${lesson.id}.html`;
+    }
+    
+    console.log('[renderLesson] Content URL:', contentUrl);
+    
     if (window.updateDebugInfo) {
       window.updateDebugInfo({ lessonId: id, contentUrl });
     }
