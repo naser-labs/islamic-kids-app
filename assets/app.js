@@ -1,15 +1,19 @@
 /**
- * APP.JS - Lesson loading, quiz, and sharing logic with GitHub Pages support
+ * APP.JS - Enhanced lesson loading with progress tracking and interactive features
  */
 
 (function(){
   'use strict';
 
+  if (window.__teenDeenAppInit) return;
+  window.__teenDeenAppInit = true;
+
   const page = document.body.getAttribute('data-page');
   
   const state = {
     lessons: [],
-    lastLessonId: null
+    lastLessonId: null,
+    currentLesson: null
   };
 
   const readLastLesson = () => {
@@ -24,12 +28,10 @@
    * Load lessons manifest using base path resolver
    */
   async function loadLessons() {
-    // Ensure we have the correct path
     let manifestUrl;
     if (window.withBase && typeof window.withBase === 'function') {
       manifestUrl = window.withBase('data/lessons.json');
     } else {
-      // Fallback: construct URL manually
       const base = window.BASE_PATH || '/islamic-kids-app';
       manifestUrl = `${base}/data/lessons.json`;
     }
@@ -45,7 +47,6 @@
       const data = await res.json();
       console.log('[loadLessons] Loaded', (data.lessons || []).length, 'lessons');
       
-      // Update debug info
       if (window.updateDebugInfo) {
         window.updateDebugInfo({ lessonsCount: (data.lessons || []).length });
       }
@@ -55,7 +56,6 @@
     } catch (error) {
       console.error('[loadLessons] Error:', error);
       
-      // Update debug info with error
       if (window.updateDebugInfo) {
         window.updateDebugInfo({ 
           lastError: `${error.message}\n\nAttempted URL: ${manifestUrl}\nBase path: ${window.BASE_PATH || '(none)'}` 
@@ -84,17 +84,18 @@
     
     if(!id){
       document.getElementById('lesson-title').textContent = 'Lesson not found';
-      document.getElementById('lesson-body').innerHTML = 'Missing lesson id. <a href="./" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">Back to lessons</a>';
+      document.getElementById('lesson-body').innerHTML = 'Missing lesson id. <a href=\"./\" class=\"btn btn-secondary\" style=\"margin-top:12px; display:inline-block;\">Back to lessons</a>';
       return;
     }
     const lesson = findLessonById(id);
     if(!lesson){
       console.error('[renderLesson] Lesson not found in manifest:', id);
       document.getElementById('lesson-title').textContent = 'Lesson not found';
-      document.getElementById('lesson-body').innerHTML = 'This lesson doesn\'t exist or hasn\'t loaded yet. <a href="./" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">Back to lessons</a>';
+      document.getElementById('lesson-body').innerHTML = 'This lesson doesn\\'t exist or hasn\\'t loaded yet. <a href=\"./\" class=\"btn btn-secondary\" style=\"margin-top:12px; display:inline-block;\">Back to lessons</a>';
       return;
     }
     
+    state.currentLesson = lesson;
     console.log('[renderLesson] Rendering lesson:', lesson.title);
     
     writeLastLesson(id);
@@ -116,26 +117,58 @@
       window.updateDebugInfo({ lessonId: id, contentUrl });
     }
     
+    // Load lesson content
     (async () => {
       try {
         const res = await fetch(contentUrl);
         if (res.ok) {
           const html = await res.text();
           document.getElementById('lesson-body').innerHTML = html;
+          
+          // Initialize TTS after content loads
+          if (window.TeenDeenTTS) {
+            setTimeout(() => {
+              const initialized = window.TeenDeenTTS.initialize('.lesson-content');
+              if (initialized && document.getElementById('tts-container')) {
+                window.TeenDeenTTS.renderControls('#tts-container');
+              }
+            }, 500);
+          }
         } else {
           document.getElementById('lesson-body').textContent = `This is a brief, friendly overview to introduce: ${lesson.title}.`;
         }
-      } catch {
+      } catch (err) {
+        console.warn('[Content] Load error:', err);
         document.getElementById('lesson-body').textContent = `This is a brief, friendly overview to introduce: ${lesson.title}.`;
       }
     })();
 
     const tagsEl = document.getElementById('lesson-tags');
     if (tagsEl) {
-      tagsEl.innerHTML = (lesson.tags||[]).map(t => `<span class="chip">${t}</span>`).join('');
+      tagsEl.innerHTML = (lesson.tags||[]).map(t => `<span class=\"chip\">${t}</span>`).join('');
     }
 
-    // Show and setup quiz
+    // Setup quiz
+    setupQuiz(lesson);
+
+    // Setup key takeaways
+    const pointsEl = document.getElementById('lesson-points');
+    if (pointsEl) {
+      if (lesson.id === 'lesson-01') {
+        pointsEl.innerHTML = `
+          <li>Actions are judged by intentions — sincerity matters most.</li>
+          <li>Do good for Allah, not for likes or attention.</li>
+          <li>Build the habit of checking your intention before and during any deed.</li>`;
+      } else {
+        pointsEl.innerHTML = `
+          <li>Read carefully and think critically</li>
+          <li>Connect ideas to your daily life</li>
+          <li>Discuss what you learned with someone you trust</li>`;
+      }
+    }
+  }
+
+  function setupQuiz(lesson) {
     const quizSection = document.getElementById('quiz-section');
     const optionsEl = document.getElementById('quiz-options');
     const resultEl = document.getElementById('quiz-result');
@@ -144,44 +177,41 @@
 
     if (quizSection) quizSection.style.display = 'block';
 
-    let quizScore = null; // null until answered
+    let quizScore = null;
     let totalQuestions = 1;
 
-    // Render quiz options based on lesson
     if (optionsEl) {
       if (lesson.id === 'lesson-01') {
-        // For lesson-01, render a placeholder that the interactive script will replace
         totalQuestions = 5;
-        optionsEl.innerHTML = '<p style="color: var(--color-text-muted); font-style: italic;">Loading interactive quiz...</p>';
+        optionsEl.innerHTML = '<p style=\"color: var(--color-text-muted); font-style: italic;\">Loading interactive quiz...</p>';
         console.log('[Quiz] Rendered placeholder for lesson-01, interactive script will take over');
+        return; // Interactive script will handle lesson-01
       } else {
-        // For other lessons, render the simple fallback quiz
         totalQuestions = 1;
         optionsEl.innerHTML = [
           {id:'a', text:'A kind action'},
           {id:'b', text:'A harmful habit'},
           {id:'c', text:'A random guess'}
         ].map((o) => `
-          <label style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; transition: var(--transition-fast);">
-            <input type="radio" name="quiz" value="${o.id}" style="width: 20px; height: 20px; cursor: pointer;">
-            <span style="font-size: var(--text-base);">${o.text}</span>
+          <label class=\"quiz-choice-label\">
+            <input type=\"radio\" name=\"quiz\" value=\"${o.id}\" style=\"width: 20px; height: 20px; cursor: pointer; margin: 0; flex-shrink: 0;\">
+            <span style=\"font-size: var(--text-base);\">${o.text}</span>
           </label>`).join('');
       }
     }
 
-    function showOverallResultText(score, total){
+    function showResult(score, total){
       if (!resultEl) return;
       resultEl.classList.remove('hidden');
       resultEl.style.display = 'block';
       const ok = score === total;
-      resultEl.textContent = `Score: ${score}/${total} ${ok ? '✓ Great job — fully correct.' : 'Keep going — review the explanations and try again.'}`;
+      resultEl.textContent = `Score: ${score}/${total} ${ok ? '✓ Great job — fully correct.' : 'Keep going — review the lesson and try again.'}`;
       resultEl.style.color = ok ? 'var(--color-primary)' : 'var(--color-secondary)';
     }
 
-    if (submitBtn && lesson.id !== 'lesson-01') {
-      // Only add event listener for non-lesson-01 (lesson-01 handled by interactive script)
+    if (submitBtn) {
       submitBtn.onclick = () => {
-        const chosen = (document.querySelector('input[name="quiz"]:checked')||{}).value;
+        const chosen = (document.querySelector('input[name=\"quiz\"]:checked')||{}).value;
         if(!chosen){ 
           if (resultEl){ 
             resultEl.classList.remove('hidden'); 
@@ -191,15 +221,17 @@
           } 
           return; 
         }
+        
         const correct = chosen === 'a';
         quizScore = correct ? 1 : 0;
-        showOverallResultText(quizScore, 1);
+        showResult(quizScore, 1);
+        
         if (retryBtn) { 
           retryBtn.classList.toggle('hidden', correct); 
           retryBtn.style.display = correct ? 'none' : 'inline-block'; 
         }
         
-        // Save progress
+        // Save to legacy storage
         try {
           const completed = new Set(JSON.parse(localStorage.getItem('completedLessons')||'[]'));
           completed.add(lesson.id);
@@ -209,7 +241,17 @@
           localStorage.setItem('lessonScores', JSON.stringify(scores));
         } catch {}
 
-        // Trigger certificate if passed
+        // Update progress tracking
+        if (window.TeenDeenProgress) {
+          window.TeenDeenProgress.completeLesson(lesson.id, quizScore, totalQuestions);
+        }
+
+        // Celebrate if passed
+        if (correct && window.TeenDeenConfetti) {
+          setTimeout(() => window.TeenDeenConfetti.celebrate(), 300);
+        }
+
+        // Show certificate if passed
         if (quizScore === 1 && window.TeenDeenCertificate) {
           try {
             const passed = window.TeenDeenCertificate.checkIfPassed(lesson.id, quizScore, 1);
@@ -223,37 +265,24 @@
               });
             }
           } catch (certErr) {
-            console.warn('[Certificate] Error rendering certificate panel:', certErr);
+            console.warn('[Certificate] Error:', certErr);
           }
         }
       };
     }
 
-    if (retryBtn && lesson.id !== 'lesson-01') {
+    if (retryBtn) {
       retryBtn.onclick = () => {
-        if (resultEl) { resultEl.classList.add('hidden'); resultEl.style.display = 'none'; }
-        const checked = document.querySelector('input[name="quiz"]:checked');
+        if (resultEl) { 
+          resultEl.classList.add('hidden'); 
+          resultEl.style.display = 'none'; 
+        }
+        const checked = document.querySelector('input[name=\"quiz\"]:checked');
         if (checked) checked.checked = false;
         retryBtn.classList.add('hidden');
         retryBtn.style.display = 'none';
         quizScore = null;
       };
-    }
-
-    const pointsEl = document.getElementById('lesson-points');
-    if (pointsEl) {
-      // Custom key takeaways for Lesson 1
-      if (lesson.id === 'lesson-01') {
-        pointsEl.innerHTML = `
-          <li>Actions are judged by intentions — sincerity matters most.</li>
-          <li>Do good for Allah, not for likes or attention.</li>
-          <li>Build the habit of checking your intention before and during any deed.</li>`;
-      } else {
-        pointsEl.innerHTML = `
-          <li>Read carefully and think critically</li>
-          <li>Connect ideas to your daily life</li>
-          <li>Discuss what you learned with someone you trust</li>`;
-      }
     }
   }
 
@@ -279,12 +308,20 @@
           const lessonTitle = document.getElementById('lesson-title');
           const lessonBody = document.getElementById('lesson-body');
           if (lessonTitle) lessonTitle.textContent = 'Error rendering lesson';
-          if (lessonBody) lessonBody.innerHTML = `<p>An error occurred while loading the lesson.</p><p><strong>${err.message}</strong></p><a href="./" class="cta-btn" style="display: inline-block; margin-top: 12px;">Back to Lessons</a>`;
+          if (lessonBody) lessonBody.innerHTML = `<p>An error occurred while loading the lesson.</p><p><strong>${err.message}</strong></p><a href=\"./\" class=\"cta-btn\" style=\"display: inline-block; margin-top: 12px;\">Back to Lessons</a>`;
         }
       }
       
-      // Update progress count on parents page
-      if(page === 'parents'){
+      // Update progress count on home/parents page
+      if(page === 'home' || page === 'parents'){
+        if (window.TeenDeenProgress) {
+          const stats = window.TeenDeenProgress.getStats();
+          const progressCount = document.getElementById('progress-count');
+          if (progressCount) {
+            progressCount.textContent = stats.completedCount;
+          }
+        }
+        
         const input = document.getElementById('parent-phone');
         if(input){
           try {
@@ -301,20 +338,26 @@
     }).catch(err => {
       console.error('[loadLessons error]', err);
       const offline = !navigator.onLine;
-      const errorMsg = err.message || 'Unknown error';
-      const basePath = window.BASE_PATH || '(not set)';
       
-      // If we're offline and have a service worker, it might still work
       if (offline) {
         console.warn('[init] Device is offline. Service worker may still provide cached content.');
       }
       
-      // Don't show error on lesson page if we're just loading the lesson list
       if (page !== 'lesson') {
-        alert(`Could not load lessons.\n\n${errorMsg}\n\nPlease check your connection and refresh the page.`);
+        const errorMsg = err.message || 'Unknown error';
+        console.error(`Could not load lessons: ${errorMsg}`);
       }
     });
   }
+
+  // Listen for badge events
+  window.addEventListener('teendeen:badge-earned', (e) => {
+    console.log('[Badge] Earned:', e.detail);
+    if (window.TeenDeenConfetti) {
+      window.TeenDeenConfetti.celebrate();
+    }
+    // Could show toast notification here
+  });
 
   // Start the app when DOM is ready
   if(document.readyState === 'loading'){
