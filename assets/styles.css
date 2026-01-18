@@ -96,11 +96,21 @@ main {
   color: var(--color-text-muted);
   font-weight: 500;
   transition: var(--transition-fast);
+  display: inline-block;
 }
 
 .nav-pill:hover,
 .nav-pill[aria-current="page"] {
   background: var(--color-bg-warm);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.nav-pill:visited {
+  color: var(--color-text-muted);
+}
+
+.nav-pill[aria-current="page"]:visited {
   color: var(--color-primary);
 }
 
@@ -364,10 +374,29 @@ main {
   padding: 24px;
   box-shadow: var(--shadow-sm);
   transition: var(--transition-fast);
+  text-decoration: none;
+  display: block;
+  color: inherit;
 }
 
 .card:hover {
   box-shadow: var(--shadow-md);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.card-badge {
+  background: var(--color-bg-warm);
+  color: var(--color-primary);
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.85rem;
 }
 
 .card-description {
@@ -376,10 +405,38 @@ main {
   line-height: 1.6;
 }
 
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
+}
+
+/* NO LESSONS STATE */
+.no-lessons {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 24px;
+}
+
+.no-lessons-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.no-lessons-text {
+  color: var(--color-text-muted);
+  font-size: 1rem;
 }
 
 /* LESSON CARD */
@@ -420,6 +477,31 @@ main {
   margin-bottom: 16px;
 }
 
+.lesson-content {
+  line-height: 1.8;
+}
+
+.lesson-content p {
+  margin-bottom: 16px;
+}
+
+.lesson-content h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+  color: var(--color-text);
+}
+
+.lesson-content ul,
+.lesson-content ol {
+  margin-left: 24px;
+  margin-bottom: 16px;
+}
+
+.lesson-content li {
+  margin-bottom: 8px;
+}
+
 /* PILLS */
 .pill-label {
   display: inline-block;
@@ -429,6 +511,104 @@ main {
   border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 600;
+}
+
+/* FORM ELEMENTS */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 1em;
+  color: var(--color-text);
+  background: white;
+  transition: var(--transition-fast);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(255, 159, 67, 0.1);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--color-primary);
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--color-primary);
+}
+
+/* QUIZ CHOICE LABELS */
+.quiz-choice-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 150ms ease;
+  min-height: 44px;
+  user-select: none;
+  background: white;
+}
+
+.quiz-choice-label:hover {
+  background: var(--color-bg-warm);
+  border-color: var(--color-primary);
+}
+
+.quiz-choice-label:has(input:checked) {
+  background: rgba(255, 159, 67, 0.1);
+  border-color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* QUIZ QUESTION BLOCKS */
+.quiz-question-block {
+  padding: 20px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+}
+
+.quiz-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quiz-feedback {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.95em;
+  line-height: 1.6;
 }
 
 /* UTILITIES */
@@ -473,69 +653,26 @@ main {
   transition: background 300ms ease;
 }
 
-/* QUIZ CHOICE LABELS */
-.quiz-choice-label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 150ms ease;
-  min-height: 44px;
-  user-select: none;
+/* INTRO CARD */
+.intro-card {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.quiz-choice-label:hover {
-  background: var(--color-bg-warm);
-  border-color: var(--color-primary);
+.intro-card h2 {
+  color: var(--color-primary);
+  margin-bottom: 16px;
 }
 
-.quiz-choice-label:has(input:checked) {
-  background: rgba(255, 159, 67, 0.1);
-  border-color: var(--color-primary);
+.intro-card p {
+  margin-bottom: 16px;
+  line-height: 1.7;
 }
 
-input[type="radio"] {
-  accent-color: var(--color-primary);
-  cursor: pointer;
-}
-
-/* QUIZ FEEDBACK */
-.quiz-feedback {
-  margin-top: 16px;
-  padding: 12px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 0.95em;
-  line-height: 1.6;
-}
-
-/* ACCESSIBILITY */
-*:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-/* REDUCED MOTION */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* MOBILE */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2rem;
-  }
-  
-  .hero-subtitle {
-    font-size: 1rem;
   }
   
   .navbar {
@@ -544,22 +681,36 @@ input[type="radio"] {
   }
   
   .navbar-nav {
-    width: 100%;
     order: 3;
-    overflow-x: auto;
-    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: center;
   }
   
   .cards-grid {
     grid-template-columns: 1fr;
   }
   
-  .section-title {
-    font-size: 1.5rem;
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }
 
-/* DARK MODE (future enhancement) */
-@media (prefers-color-scheme: dark) {
-  /* Placeholder for dark mode variables */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.75rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .cta-btn,
+  .btn-inline,
+  .card-btn,
+  .quiz-btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
 }
