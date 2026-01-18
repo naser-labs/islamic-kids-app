@@ -83,14 +83,15 @@
     
     if(!id){
       document.getElementById('lesson-title').textContent = 'Lesson not found';
-      document.getElementById('lesson-body').innerHTML = 'Missing lesson id. <a href="./" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">Back to lessons</a>';
+      document.getElementById('lesson-body').innerHTML = 'Missing lesson id. <a href="./" class="cta-btn" style="margin-top:12px; display:inline-block;">Back to lessons</a>';
       return;
     }
+    
     const lesson = findLessonById(id);
     if(!lesson){
       console.error('[renderLesson] Lesson not found in manifest:', id);
       document.getElementById('lesson-title').textContent = 'Lesson not found';
-      document.getElementById('lesson-body').innerHTML = 'This lesson doesn\'t exist or hasn\'t loaded yet. <a href="./" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">Back to lessons</a>';
+      document.getElementById('lesson-body').innerHTML = 'This lesson doesn\'t exist or hasn\'t loaded yet. <a href="./" class="cta-btn" style="margin-top:12px; display:inline-block;">Back to lessons</a>';
       return;
     }
     
@@ -134,6 +135,7 @@
             }, 500);
           }
         } else {
+          console.warn('[Content] Could not load:', contentUrl, res.status);
           document.getElementById('lesson-body').textContent = `This is a brief, friendly overview to introduce: ${lesson.title}.`;
         }
       } catch (err) {
@@ -150,11 +152,12 @@
     // Delegate to shared quiz module
     setTimeout(() => {
       if (window.TeenDeenQuiz && typeof window.TeenDeenQuiz.initialize === 'function') {
+        console.log('[Quiz] Initializing quiz for lesson:', lesson.id);
         window.TeenDeenQuiz.initialize(lesson);
       } else {
         console.warn('[Quiz] TeenDeenQuiz not available; no quiz will be rendered.');
       }
-    }, 150);
+    }, 250);
 
     // Setup key takeaways
     const pointsEl = document.getElementById('lesson-points');
@@ -163,8 +166,8 @@
         pointsEl.innerHTML = `
           <li>Actions are judged by intentions.</li>
           <li>Allah looks at your heart (intention) before your actions.</li>
-          <li>Riya’ (showing off) can destroy deeds—keep your worship sincere.</li>
-          <li>Pause and ask: “Who am I really doing this for?”</li>`;
+          <li>Riya' (showing off) can destroy deeds—keep your worship sincere.</li>
+          <li>Pause and ask: "Who am I really doing this for?"</li>`;
       } else {
         pointsEl.innerHTML = `
           <li>Read carefully and think critically</li>
@@ -187,6 +190,7 @@
     
     loadLessons().then(ls => {
       state.lessons = ls;
+      console.log('[init] Lessons loaded:', state.lessons.length);
       
       if(page === 'lesson'){
         try {
@@ -238,12 +242,12 @@
         if (grid) {
           grid.innerHTML = `
             <div class=\"no-lessons\">
-              <p class=\"no-lessons-title\">${offline ? 'Offline' : 'Error loading lessons'}</p>
+              <p class=\"no-lessons-title\">⚠️ ${offline ? 'Offline' : 'Error Loading Lessons'}</p>
               <p class=\"no-lessons-text\">${offline ? 
                 'You\'re offline. Reconnect to load lessons.' : 
                 'Unable to load lessons. Please check your connection and try again.'
               }</p>
-              <button class=\"btn-inline\" id=\"retry-lessons\" style=\"margin-top: 12px;\">Retry</button>
+              <button class=\"btn-inline\" id=\"retry-lessons\" style=\"margin-top: 12px;\">🔄 Retry</button>
             </div>
           `;
           const retryBtn = document.getElementById('retry-lessons');
