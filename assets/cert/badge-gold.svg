@@ -1,0 +1,22 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="badge-shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Gold Badge -->
+  <g id="badge-gold" filter="url(#badge-shadow)">
+    <!-- Outer circle -->
+    <circle cx="100" cy="100" r="95" fill="#FFD700" stroke="#FFA500" stroke-width="3"/>
+    <!-- Inner circle -->
+    <circle cx="100" cy="100" r="85" fill="#FFF8DC" stroke="#FFD700" stroke-width="2"/>
+    <!-- Star in center -->
+    <polygon points="100,40 115,80 160,80 130,115 145,155 100,120 55,155 70,115 40,80 85,80" fill="#FFD700"/>
+    <!-- Text circle -->
+    <circle cx="100" cy="100" r="70" fill="none" stroke="#FF9F43" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+    <!-- Text -->
+    <text x="100" y="85" text-anchor="middle" font-size="16" font-weight="bold" fill="#FF6B35">TEEN DEEN</text>
+    <text x="100" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#FF6B35">GOLD</text>
+    <text x="100" y="130" text-anchor="middle" font-size="12" fill="#FF9F43">90-100%</text>
+  </g>
+</svg>
