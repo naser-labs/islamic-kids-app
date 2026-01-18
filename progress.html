@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="site-base" content="/islamic-kids-app">
-  <title>My Progress | Teen Deen</title>
+  <title>Your Progress | Teen Deen</title>
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#ffd166">
   <link rel="apple-touch-icon" href="assets/icon.svg">
-  <meta name="description" content="Track your learning progress and see which lessons you've completed.">
   <script src="assets/base-path.js"></script>
 </head>
 <body data-page="progress">
@@ -30,31 +29,54 @@
   </header>
 
   <main>
-    <!-- HERO SECTION -->
+    <!-- HERO -->
     <section class="hero">
       <div class="hero-content">
         <h1 class="hero-title">Your Progress</h1>
-        <p class="hero-subtitle">Track your learning journey and celebrate your achievements.</p>
+        <p class="hero-subtitle">Track your learning journey and celebrate achievements</p>
       </div>
     </section>
 
-    <!-- PROGRESS STATS -->
+    <!-- TODAY'S QUEST -->
+    <section class="content-section" id="quest-section">
+      <div id="daily-quest-container"></div>
+    </section>
+
+    <!-- STATS OVERVIEW -->
     <section class="content-section">
       <div class="section-header">
-        <h2 class="section-title">Learning Stats</h2>
+        <h2 class="section-title">Overview</h2>
       </div>
       <div class="cards-grid">
-        <div class="card">
-          <h3 class="text-primary" id="completed-count">0</h3>
-          <p class="card-description">Lessons Completed</p>
+        <div class="card" style="background: linear-gradient(135deg, #fff7ec 0%, #ffefd5 100%); border-left: 4px solid var(--color-primary);">
+          <h3 style="margin: 0 0 8px 0; color: var(--color-text-muted); font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.5px;">Level</h3>
+          <p style="margin: 0; font-size: 3em; font-weight: 700; color: var(--color-primary);" id="stat-level">1</p>
         </div>
-        <div class="card">
-          <h3 class="text-primary" id="completion-percentage">0%</h3>
-          <p class="card-description">Course Progress</p>
+        <div class="card" style="background: linear-gradient(135deg, #fff7ec 0%, #ffefd5 100%); border-left: 4px solid var(--color-accent);">
+          <h3 style="margin: 0 0 8px 0; color: var(--color-text-muted); font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.5px;">Total XP</h3>
+          <p style="margin: 0; font-size: 3em; font-weight: 700; color: var(--color-accent);" id="stat-xp">0</p>
         </div>
+        <div class="card" style="background: linear-gradient(135deg, #fff7ec 0%, #ffefd5 100%); border-left: 4px solid #ef476f;">
+          <h3 style="margin: 0 0 8px 0; color: var(--color-text-muted); font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.5px;">Current Streak</h3>
+          <p style="margin: 0; font-size: 3em; font-weight: 700; color: #ef476f;" id="stat-streak">0</p>
+          <p style="margin: 8px 0 0 0; font-size: 0.9em; color: var(--color-text-muted);">days</p>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #fff7ec 0%, #ffefd5 100%); border-left: 4px solid #118ab2;">
+          <h3 style="margin: 0 0 8px 0; color: var(--color-text-muted); font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.5px;">Completed</h3>
+          <p style="margin: 0; font-size: 3em; font-weight: 700; color: #118ab2;" id="stat-completed">0</p>
+          <p style="margin: 8px 0 0 0; font-size: 0.9em; color: var(--color-text-muted);">lessons</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BADGES -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2 class="section-title">Badges</h2>
+      </div>
+      <div id="badges-container">
         <div class="card">
-          <h3 class="text-primary" id="quiz-average">—</h3>
-          <p class="card-description">Average Quiz Score</p>
+          <p style="text-align: center; color: var(--color-text-muted);">Complete lessons to earn badges!</p>
         </div>
       </div>
     </section>
@@ -64,43 +86,116 @@
       <div class="section-header">
         <h2 class="section-title">Completed Lessons</h2>
       </div>
-      <div class="cards-grid" id="completed-lessons-grid">
-        <div class="no-lessons">
-          <p class="no-lessons-title">No lessons completed yet</p>
-          <p class="no-lessons-text">Start learning to track your progress here.</p>
-          <a href="lessons/" class="card-btn btn-inline" style="margin-top: 16px;">Browse Lessons →</a>
+      <div id="completed-lessons-container">
+        <div class="card">
+          <p style="text-align: center; color: var(--color-text-muted);">No lessons completed yet. Start your first lesson!</p>
         </div>
       </div>
     </section>
 
-    <!-- NEXT STEPS -->
+    <!-- SETTINGS -->
     <section class="content-section">
       <div class="section-header">
-        <h2 class="section-title">Continue Learning</h2>
+        <h2 class="section-title">Settings</h2>
       </div>
       <div class="card">
-        <h3 class="text-primary">Keep Going!</h3>
-        <p class="card-description">Your progress is saved locally on this device. Complete more lessons to earn more achievements.</p>
-        <a href="lessons/" class="card-btn btn-inline" style="margin-top: 12px;">Browse All Lessons →</a>
-      </div>
-    </section>
-
-    <!-- PRIVACY NOTE -->
-    <section class="content-section">
-      <div class="card">
-        <h3 class="text-primary">🔒 Your Privacy</h3>
-        <p class="card-description">All progress is stored locally on your device. No data is sent to any server. Clearing your browser data will reset your progress.</p>
+        <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; padding: 12px 0;">
+          <input type="checkbox" id="animations-toggle" style="width: 20px; height: 20px; cursor: pointer;" />
+          <div>
+            <strong style="display: block; margin-bottom: 4px;">Celebration Animations</strong>
+            <span style="font-size: 0.9em; color: var(--color-text-muted);">Show confetti when you achieve milestones</span>
+          </div>
+        </label>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="footer-content">
-      <p>Keep learning and growing. Every lesson brings you closer to understanding.</p>
+      <p>Keep learning and growing in knowledge. May Allah accept your efforts.</p>
     </div>
   </footer>
 
-  <script src="assets/app.js" defer></script>
-  <script src="assets/progress.js" defer></script>
+  <script src="assets/progress.js"></script>
+  <script src="assets/confetti.js"></script>
+  <script src="assets/quests.js"></script>
+  <script>
+    (function() {
+      'use strict';
+
+      // Wait for modules to load
+      window.addEventListener('DOMContentLoaded', async () => {
+        // Load progress stats
+        if (window.TeenDeenProgress) {
+          const stats = window.TeenDeenProgress.getStats();
+          
+          document.getElementById('stat-level').textContent = stats.level;
+          document.getElementById('stat-xp').textContent = stats.xp;
+          document.getElementById('stat-streak').textContent = stats.streak.current;
+          document.getElementById('stat-completed').textContent = stats.completedCount;
+
+          // Render badges
+          if (stats.badges.length > 0) {
+            const badgesHTML = stats.badges.map(badge => `
+              <div class="card" style="text-align: center;">
+                <div style="font-size: 3em; margin-bottom: 8px;">${badge.icon}</div>
+                <h3 style="margin: 0 0 4px 0; font-size: 1.1em; color: var(--color-text);">${badge.name}</h3>
+                <p style="margin: 0; font-size: 0.9em; color: var(--color-text-muted);">${badge.desc}</p>
+                <p style="margin: 8px 0 0 0; font-size: 0.8em; color: var(--color-text-muted);">
+                  ${new Date(badge.earnedAt).toLocaleDateString()}
+                </p>
+              </div>
+            `).join('');
+            document.getElementById('badges-container').innerHTML = `<div class="cards-grid">${badgesHTML}</div>`;
+          }
+
+          // Render completed lessons
+          if (stats.completedCount > 0) {
+            try {
+              const scores = JSON.parse(localStorage.getItem('lessonScores') || '{}');
+              const completedHTML = stats.completedCount > 0 
+                ? Object.entries(scores).map(([lessonId, data]) => {
+                    const isPerfect = data.score === data.total;
+                    return `
+                      <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                          <div style="flex: 1;">
+                            <h3 style="margin: 0 0 8px 0; font-size: 1.1em;">${lessonId}</h3>
+                            <p style="margin: 0; font-size: 0.9em; color: var(--color-text-muted);">
+                              Score: ${data.score}/${data.total}
+                              ${isPerfect ? '<strong style="color: var(--color-accent);">✓ Perfect!</strong>' : ''}
+                            </p>
+                          </div>
+                          <a href="lessons/lesson.html?id=${lessonId}" class="btn-inline">Review</a>
+                        </div>
+                      </div>
+                    `;
+                  }).join('')
+                : '<div class="card"><p style="text-align: center; color: var(--color-text-muted);">No lessons completed yet.</p></div>';
+              
+              document.getElementById('completed-lessons-container').innerHTML = completedHTML;
+            } catch (err) {
+              console.warn('[Progress] Error rendering completed lessons:', err);
+            }
+          }
+        }
+
+        // Load daily quest
+        if (window.TeenDeenQuests) {
+          await window.TeenDeenQuests.loadQuests();
+          window.TeenDeenQuests.renderQuest('#daily-quest-container');
+        }
+
+        // Settings
+        const animationsToggle = document.getElementById('animations-toggle');
+        if (window.TeenDeenConfetti) {
+          animationsToggle.checked = window.TeenDeenConfetti.enabled;
+          animationsToggle.addEventListener('change', (e) => {
+            window.TeenDeenConfetti.setEnabled(e.target.checked);
+          });
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
