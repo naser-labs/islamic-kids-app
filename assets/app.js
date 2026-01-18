@@ -147,25 +147,26 @@
     let quizScore = null; // null until answered
     let totalQuestions = 1;
 
-    // Custom multi-question quiz for Lesson 1 (intentions) - will be replaced by interactive script
-    let questions = null;
-    if (lesson.id === 'lesson-01') {
-      // Simplified placeholder - interactive script will replace this
-      totalQuestions = 5;
-    }
-
-    if (optionsEl && lesson.id !== 'lesson-01') {
-      // Only render fallback quiz for non-lesson-01 lessons
-      totalQuestions = 1;
-      optionsEl.innerHTML = [
-        {id:'a', text:'A kind action'},
-        {id:'b', text:'A harmful habit'},
-        {id:'c', text:'A random guess'}
-      ].map((o) => `
-        <label style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; transition: var(--transition-fast);">
-          <input type="radio" name="quiz" value="${o.id}" style="width: 20px; height: 20px; cursor: pointer;">
-          <span style="font-size: var(--text-base);">${o.text}</span>
-        </label>`).join('');
+    // Render quiz options based on lesson
+    if (optionsEl) {
+      if (lesson.id === 'lesson-01') {
+        // For lesson-01, render a placeholder that the interactive script will replace
+        totalQuestions = 5;
+        optionsEl.innerHTML = '<p style="color: var(--color-text-muted); font-style: italic;">Loading interactive quiz...</p>';
+        console.log('[Quiz] Rendered placeholder for lesson-01, interactive script will take over');
+      } else {
+        // For other lessons, render the simple fallback quiz
+        totalQuestions = 1;
+        optionsEl.innerHTML = [
+          {id:'a', text:'A kind action'},
+          {id:'b', text:'A harmful habit'},
+          {id:'c', text:'A random guess'}
+        ].map((o) => `
+          <label style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; transition: var(--transition-fast);">
+            <input type="radio" name="quiz" value="${o.id}" style="width: 20px; height: 20px; cursor: pointer;">
+            <span style="font-size: var(--text-base);">${o.text}</span>
+          </label>`).join('');
+      }
     }
 
     function showOverallResultText(score, total){
