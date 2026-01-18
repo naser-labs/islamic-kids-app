@@ -144,7 +144,7 @@
 
     const tagsEl = document.getElementById('lesson-tags');
     if (tagsEl) {
-      tagsEl.innerHTML = (lesson.tags||[]).map(t => `<span class="chip">${t}</span>`).join('');
+      tagsEl.innerHTML = (lesson.tags||[]).map(t => `<span class=\"chip\">${t}</span>`).join('');
     }
 
     // Delegate to shared quiz module
@@ -161,9 +161,10 @@
     if (pointsEl) {
       if (lesson.id === 'lesson-01') {
         pointsEl.innerHTML = `
-          <li>Allah is Al-Khaliq — The Creator of everything.</li>
-          <li>You were created to worship Allah and live with purpose.</li>
-          <li>Sincerity matters: keep your intention for Allah, not people.</li>`;
+          <li>Actions are judged by intentions.</li>
+          <li>Allah looks at your heart (intention) before your actions.</li>
+          <li>Riya’ (showing off) can destroy deeds—keep your worship sincere.</li>
+          <li>Pause and ask: “Who am I really doing this for?”</li>`;
       } else {
         pointsEl.innerHTML = `
           <li>Read carefully and think critically</li>
@@ -195,7 +196,7 @@
           const lessonTitle = document.getElementById('lesson-title');
           const lessonBody = document.getElementById('lesson-body');
           if (lessonTitle) lessonTitle.textContent = 'Error rendering lesson';
-          if (lessonBody) lessonBody.innerHTML = `<p>An error occurred while loading the lesson.</p><p><strong>${err.message}</strong></p><a href="./" class="cta-btn" style="display: inline-block; margin-top: 12px;">Back to Lessons</a>`;
+          if (lessonBody) lessonBody.innerHTML = `<p>An error occurred while loading the lesson.</p><p><strong>${err.message}</strong></p><a href=\"./\" class=\"cta-btn\" style=\"display: inline-block; margin-top: 12px;\">Back to Lessons</a>`;
         }
       }
       
@@ -236,11 +237,17 @@
         const grid = document.getElementById('lessons-grid');
         if (grid) {
           grid.innerHTML = `
-            <div class="no-lessons">
-              <p class="no-lessons-title">Error loading lessons</p>
-              <p class="no-lessons-text">Please refresh the page. If the problem persists, check your connection.</p>
+            <div class=\"no-lessons\">
+              <p class=\"no-lessons-title\">${offline ? 'Offline' : 'Error loading lessons'}</p>
+              <p class=\"no-lessons-text\">${offline ? 
+                'You\'re offline. Reconnect to load lessons.' : 
+                'Unable to load lessons. Please check your connection and try again.'
+              }</p>
+              <button class=\"btn-inline\" id=\"retry-lessons\" style=\"margin-top: 12px;\">Retry</button>
             </div>
           `;
+          const retryBtn = document.getElementById('retry-lessons');
+          if (retryBtn) retryBtn.addEventListener('click', () => location.reload());
         }
       }
     });
