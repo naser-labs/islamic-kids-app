@@ -165,7 +165,8 @@
 
       const pass = score >= Math.ceil(quizData.questions.length * 0.7);
       showResultsBox(
-        `<div style="font-size: 1.1em; font-weight: 700; margin-bottom: 8px;">Score: ${score}/${quizData.questions.length}</div>${pass ? '<strong style="color: #06d6a0;">✓ PASSED</strong> — Great work!' : '<strong style="color: #ef476f;">Not quite.</strong> Review the explanations and try again.'}`,
+        `<div style="font-size: 1.1em; font-weight: 700; margin-bottom: 8px;">Score: ${score}/${quizData.questions.length}</div>${pass ? '<strong style="color: #06d6a0;">✓ PASSED</strong> — Great work!' : '<strong style="color: #ef476f;">Not quite.</strong> Review the explanations and try again.'}
+        `,
         pass ? 'success' : 'retry'
       );
 
@@ -250,9 +251,12 @@
       try {
         const passed = window.TeenDeenCertificate.checkIfPassed(lessonId, score, total);
         if (passed) {
+          // Extract lesson topic from tags array (first tag or empty string)
+          const lessonTopic = (lesson.tags && lesson.tags.length > 0) ? lesson.tags[0] : '';
           window.TeenDeenCertificate.renderCertificatePanel({
             lessonId,
             lessonTitle: lesson.title || '',
+            lessonTopic: lessonTopic,
             score,
             total,
             passed: true
