@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="site-base" content="/islamic-kids-app">
   <title>Your Progress | Teen Deen</title>
   <link rel="stylesheet" href="assets/styles.css">
@@ -21,7 +21,7 @@
         <a href="parents.html" class="nav-pill">Parents</a>
         <a href="progress.html" class="nav-pill" aria-current="page">Progress</a>
       </nav>
-      <button class="navbar-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+      <button class="navbar-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navbar-drawer-menu">
         <span>
           <div></div>
         </span>
@@ -32,7 +32,7 @@
     </nav>
 
     <!-- Mobile Navigation Drawer -->
-    <div class="navbar-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div class="navbar-drawer" id="navbar-drawer-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
       <div class="navbar-drawer-content">
         <div class="navbar-drawer-header">
           <span style="font-weight: 600; color: var(--color-text);">Menu</span>
