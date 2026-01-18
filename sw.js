@@ -1,31 +1,63 @@
-const CACHE_VERSION = 'v1.0.3';
+// Service Worker for Teen Deen
+// Handles offline caching and base path resolution for GitHub Pages
+
+const CACHE_VERSION = 'v1.0.4';
 const CACHE_NAME = `islamic-kids-cache-${CACHE_VERSION}`;
+
+// Determine base path from registration scope
+const getBasePath = () => {
+  // Service worker scope gives us the base path
+  const scope = self.registration.scope;
+  const url = new URL(scope);
+  let basePath = url.pathname.replace(/\/$/, '');
+  
+  // If we're at root, basePath is empty
+  if (basePath === '' || basePath === '/') {
+    basePath = '';
+  }
+  
+  return basePath;
+};
+
+const BASE_PATH = getBasePath();
+
+// Helper to prepend base path
+const withBase = (path) => {
+  if (!path) return BASE_PATH || '/';
+  const cleanPath = path.replace(/^\//, '');
+  return BASE_PATH ? `${BASE_PATH}/${cleanPath}` : `/${cleanPath}`;
+};
+
+// Core assets to cache (with base path)
 const CORE_ASSETS = [
-  './',
-  './index.html',
-  './parents.html',
-  './lessons/index.html',
-  './lessons/lesson.html',
-  './assets/styles.css',
-  './assets/app.js',
-  './assets/lessons.json',
-  './manifest.webmanifest',
-  './assets/icon.svg',
-  './assets/icon-maskable.svg'
+  withBase(''),
+  withBase('index.html'),
+  withBase('parents.html'),
+  withBase('lessons/'),
+  withBase('lessons/index.html'),
+  withBase('lessons/lesson.html'),
+  withBase('assets/styles.css'),
+  withBase('assets/app.js'),
+  withBase('assets/main.js'),
+  withBase('assets/base-path.js'),
+  withBase('assets/lessons.json'),
+  withBase('manifest.webmanifest'),
+  withBase('assets/icon.svg'),
+  withBase('assets/icon-maskable.svg')
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing version', CACHE_VERSION);
+  console.log('[SW] Installing version', CACHE_VERSION, 'with base path:', BASE_PATH || '(root)');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Caching core assets');
+      console.log('[SW] Caching core assets:', CORE_ASSETS);
       return cache.addAll(CORE_ASSETS);
     }).then(() => {
       console.log('[SW] Install complete, skipping waiting');
       return self.skipWaiting();
     }).catch((err) => {
       console.error('[SW] Install failed:', err);
-      throw err;
+      // Don't throw - allow SW to install even if some assets fail
     })
   );
 });
@@ -34,10 +66,9 @@ self.addEventListener('activate', (event) => {
   console.log('[SW] Activating version', CACHE_VERSION);
   event.waitUntil(
     caches.keys().then((keys) => {
-      console.log('[SW] Cleaning old caches:', keys.filter(k => k !== CACHE_NAME));
-      return Promise.all(keys.map((k) => {
-        if (k !== CACHE_NAME) return caches.delete(k);
-      }));
+      const oldCaches = keys.filter(k => k !== CACHE_NAME);
+      console.log('[SW] Cleaning old caches:', oldCaches);
+      return Promise.all(oldCaches.map((k) => caches.delete(k)));
     }).then(() => {
       console.log('[SW] Claiming clients');
       return self.clients.claim();
@@ -48,6 +79,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
+  
   // Only handle same-origin requests
   if (url.origin !== location.origin) return;
 
@@ -64,7 +96,8 @@ self.addEventListener('fetch', (event) => {
       }).catch(() => {
         // Offline fallback
         if (req.destination === 'document') {
-          const offlineHtml = new Response(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Offline</title><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="font-family: Arial, sans-serif; padding: 24px;">\n<div style="max-width: 600px; margin: 0 auto;">\n<h1>Offline</h1>\n<p>You’re offline. Content you’ve already opened is available. Please reconnect to load new lessons.</p>\n<a href="./" style="display:inline-block; margin-top:12px; padding:10px 14px; border-radius:999px; background:#ffd166; color:#000; text-decoration:none;">Return Home</a>\n</div></body></html>`, {
+          const homeLink = withBase('');
+          const offlineHtml = new Response(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Offline</title><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="font-family: Arial, sans-serif; padding: 24px;">\n<div style="max-width: 600px; margin: 0 auto;">\n<h1>Offline</h1>\n<p>You're offline. Content you've already opened is available. Please reconnect to load new lessons.</p>\n<a href="${homeLink}" style="display:inline-block; margin-top:12px; padding:10px 14px; border-radius:999px; background:#ffd166; color:#000; text-decoration:none;">Return Home</a>\n</div></body></html>`, {
             headers: { 'Content-Type': 'text/html; charset=utf-8' },
             status: 200
           });
