@@ -87,10 +87,25 @@
       <div class="section-header">
         <h2 class="section-title">Your Progress</h2>
       </div>
-      <div class="card">
-        <strong>Lessons Completed</strong>
-        <p class="card-description"><span id="progress-count">0</span> lesson(s) completed so far.</p>
-        <p class="text-hint">Keep learning to track your progress!</p>
+      <div class="cards-grid">
+        <div class="card">
+          <strong>Lessons Completed</strong>
+          <p class="card-description"><span id="progress-count">0</span> lesson(s) completed so far.</p>
+          <p class="text-hint">Keep learning to track your progress!</p>
+        </div>
+        <div class="card">
+          <strong>Total XP</strong>
+          <p class="card-description"><span id="xp-count">0</span> XP earned</p>
+          <p class="text-hint">Complete lessons and quizzes to earn more XP</p>
+        </div>
+        <div class="card">
+          <strong>Current Streak</strong>
+          <p class="card-description"><span id="streak-count">0</span> day(s)</p>
+          <p class="text-hint">Learn daily to build your streak!</p>
+        </div>
+      </div>
+      <div class="mt-xl" style="text-align: center;">
+        <a href="progress.html" class="cta-btn">View Full Progress</a>
       </div>
     </section>
 
@@ -125,7 +140,32 @@
     </div>
   </footer>
 
-  <script src="assets/app.js" defer></script>
+  <script src="assets/progress.js"></script>
+  <script src="assets/confetti.js"></script>
+  <script src="assets/app.js"></script>
   <script src="assets/main.js" defer></script>
+  <script>
+    // Update progress stats on home page
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.TeenDeenProgress) {
+        const stats = window.TeenDeenProgress.getStats();
+        const progressCount = document.getElementById('progress-count');
+        const xpCount = document.getElementById('xp-count');
+        const streakCount = document.getElementById('streak-count');
+        
+        if (progressCount) progressCount.textContent = stats.completedCount;
+        if (xpCount) xpCount.textContent = stats.xp;
+        if (streakCount) streakCount.textContent = stats.streak.current;
+      }
+
+      // Start button handler
+      const startBtn = document.getElementById('start-btn');
+      if (startBtn) {
+        startBtn.addEventListener('click', () => {
+          window.location.href = 'lessons/';
+        });
+      }
+    });
+  </script>
 </body>
 </html>
