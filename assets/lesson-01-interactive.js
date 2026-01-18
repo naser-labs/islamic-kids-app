@@ -4,14 +4,27 @@
  * - Quiz with 5 MCQs
  * - Reflect section with localStorage persistence
  * - Results sharing (Copy/Email/Share)
+ * 
+ * ONLY ACTIVATES FOR LESSON-01, DOES NOT INTERFERE WITH OTHER LESSONS
  */
 
 (function() {
   'use strict';
 
+  // Check if we're on lesson-01 page
+  const params = new URLSearchParams(window.location.search);
+  const lessonId = params.get('id');
+  
+  if (lessonId !== 'lesson-01') {
+    console.log('[Lesson 01 Interactive] Not lesson-01, skipping initialization');
+    return; // Exit early if not lesson-01
+  }
+
   // Prevent duplicate initialization
   if (window.__teenDeenLesson01Init) return;
   window.__teenDeenLesson01Init = true;
+
+  console.log('[Lesson 01 Interactive] Initializing for lesson-01...');
 
   // Quiz configuration
   const QUIZ_CONFIG = {
@@ -52,7 +65,7 @@
           { value: 'C', text: 'It's only for beginners' },
           { value: 'D', text: 'It's a history lesson' }
         ],
-        correct: 'C',
+        correct: 'B',
         explanation: 'It sets the foundation that "why" comes before "what."'
       },
       {
@@ -90,21 +103,26 @@
     passed: false
   };
 
-  // Initialize when DOM is ready
+  // Initialize when DOM is ready and quiz section exists
   function init() {
-    console.log('[Lesson 01 Interactive] Initializing...');
-    
-    // Wait for quiz section to exist
-    const quizSection = document.getElementById('quiz-section');
-    if (!quizSection) {
-      console.warn('[Lesson 01 Interactive] Quiz section not found, retrying...');
-      setTimeout(init, 100);
-      return;
-    }
+    // Wait for quiz section to exist (app.js needs to render it first)
+    const checkQuizSection = setInterval(() => {
+      const quizSection = document.getElementById('quiz-section');
+      const quizOptions = document.getElementById('quiz-options');
+      
+      if (quizSection && quizOptions && quizOptions.innerHTML.trim() !== '') {
+        clearInterval(checkQuizSection);
+        console.log('[Lesson 01 Interactive] Quiz section ready, replacing with custom quiz');
+        renderQuiz();
+        initReflectSection();
+        loadSavedData();
+      }
+    }, 100);
 
-    renderQuiz();
-    initReflectSection();
-    loadSavedData();
+    // Timeout after 5 seconds
+    setTimeout(() => {
+      clearInterval(checkQuizSection);
+    }, 5000);
   }
 
   // Render quiz UI
@@ -112,69 +130,71 @@
     const quizSection = document.getElementById('quiz-section');
     if (!quizSection) return;
 
+    // Find the card div inside quiz section
+    const card = quizSection.querySelector('.card');
+    if (!card) return;
+
     const quizHTML = `
-      <div id="lesson-01-quiz" style="margin-top: 32px;">
-        <h3 style="color: var(--color-primary, #ff9f43); margin: 0 0 16px 0; font-size: 1.3em;">
-          📝 Knowledge Check
-        </h3>
-        <p style="margin: 0 0 24px 0; color: var(--color-text-muted, #6c5a4d);">
-          Answer all 5 questions to check your understanding.
-        </p>
+      <h3 style="color: var(--color-primary, #ff9f43); margin: 0 0 16px 0; font-size: 1.3em;">
+        📝 Knowledge Check
+      </h3>
+      <p style="margin: 0 0 24px 0; color: var(--color-text-muted, #6c5a4d);">
+        Answer all 5 questions to check your understanding.
+      </p>
 
-        <!-- Quiz Questions -->
-        <div id="quiz-questions" style="display: flex; flex-direction: column; gap: 24px; margin-bottom: 24px;">
-          ${QUIZ_CONFIG.questions.map((q, index) => renderQuestion(q, index)).join('')}
+      <!-- Quiz Questions -->
+      <div id="quiz-questions" style="display: flex; flex-direction: column; gap: 24px; margin-bottom: 24px;">
+        ${QUIZ_CONFIG.questions.map((q, index) => renderQuestion(q, index)).join('')}
+      </div>
+
+      <!-- Results Area -->
+      <div id="quiz-results" class="hidden" style="display: none; margin-bottom: 24px;"></div>
+
+      <!-- Quiz Actions -->
+      <div id="quiz-actions" style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <button id="quiz-submit-btn" class="quiz-btn quiz-btn-primary">
+          Submit Quiz
+        </button>
+        <button id="quiz-retry-btn" class="quiz-btn quiz-btn-secondary hidden" style="display: none;">
+          Try Again
+        </button>
+      </div>
+
+      <!-- Sharing Area (shown after submit) -->
+      <div id="quiz-sharing" class="hidden" style="display: none; margin-top: 24px; padding: 20px; background: var(--color-bg-warm, #fff7ec); border-radius: var(--radius-md, 12px); border: 2px solid var(--color-primary, #ff9f43);">
+        <h4 style="margin: 0 0 16px 0; font-size: 1.1em; color: var(--color-text, #2f1b0f);">
+          📤 Share Your Results
+        </h4>
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+          <label style="display: block;">
+            <span style="display: block; margin-bottom: 4px; font-weight: 600; font-size: 0.9em; color: var(--color-text-muted, #6c5a4d);">
+              Your Name (optional for sharing)
+            </span>
+            <input 
+              type="text" 
+              id="student-name-input" 
+              placeholder="Enter your name"
+              style="width: 100%; padding: 12px; border: 2px solid var(--color-border, rgba(0,0,0,0.08)); border-radius: var(--radius-sm, 8px); font-family: inherit; font-size: 1em;"
+            />
+          </label>
         </div>
-
-        <!-- Results Area -->
-        <div id="quiz-results" class="hidden" style="display: none; margin-bottom: 24px;"></div>
-
-        <!-- Quiz Actions -->
-        <div id="quiz-actions" style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <button id="quiz-submit-btn" class="quiz-btn quiz-btn-primary">
-            Submit Quiz
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button id="share-copy-btn" class="quiz-btn quiz-btn-secondary">
+            📋 Copy Results
           </button>
-          <button id="quiz-retry-btn" class="quiz-btn quiz-btn-secondary hidden" style="display: none;">
-            Try Again
+          <button id="share-email-btn" class="quiz-btn quiz-btn-secondary">
+            ✉️ Email Results
+          </button>
+          <button id="share-web-btn" class="quiz-btn quiz-btn-secondary hidden" style="display: none;">
+            🔗 Share
           </button>
         </div>
-
-        <!-- Sharing Area (shown after submit) -->
-        <div id="quiz-sharing" class="hidden" style="display: none; margin-top: 24px; padding: 20px; background: var(--color-bg-warm, #fff7ec); border-radius: var(--radius-md, 12px); border: 2px solid var(--color-primary, #ff9f43);">
-          <h4 style="margin: 0 0 16px 0; font-size: 1.1em; color: var(--color-text, #2f1b0f);">
-            📤 Share Your Results
-          </h4>
-          <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
-            <label style="display: block;">
-              <span style="display: block; margin-bottom: 4px; font-weight: 600; font-size: 0.9em; color: var(--color-text-muted, #6c5a4d);">
-                Your Name (optional for sharing)
-              </span>
-              <input 
-                type="text" 
-                id="student-name-input" 
-                placeholder="Enter your name"
-                style="width: 100%; padding: 12px; border: 2px solid var(--color-border, rgba(0,0,0,0.08)); border-radius: var(--radius-sm, 8px); font-family: inherit; font-size: 1em;"
-              />
-            </label>
-          </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button id="share-copy-btn" class="quiz-btn quiz-btn-secondary">
-              📋 Copy Results
-            </button>
-            <button id="share-email-btn" class="quiz-btn quiz-btn-secondary">
-              ✉️ Email Results
-            </button>
-            <button id="share-web-btn" class="quiz-btn quiz-btn-secondary hidden" style="display: none;">
-              🔗 Share
-            </button>
-          </div>
-          <div id="share-status" style="margin-top: 12px; font-size: 0.9em; color: var(--color-text-muted, #6c5a4d);"></div>
-        </div>
+        <div id="share-status" style="margin-top: 12px; font-size: 0.9em; color: var(--color-text-muted, #6c5a4d);"></div>
       </div>
     `;
 
-    // Replace quiz section content (not append)
-    quizSection.innerHTML = quizHTML;
+    // Replace card content (not the entire quiz section)
+    card.innerHTML = quizHTML;
 
     // Add event listeners
     document.getElementById('quiz-submit-btn').addEventListener('click', handleSubmit);
@@ -288,6 +308,19 @@
     saveToLocalStorage('teenDeen.lesson-01.score', score);
     saveToLocalStorage('teenDeen.lesson-01.passed', quizState.passed);
     saveToLocalStorage('teenDeen.lesson-01.completedAt', new Date().toISOString());
+
+    // Also save to legacy format for compatibility
+    try {
+      const completed = new Set(JSON.parse(localStorage.getItem('completedLessons') || '[]'));
+      completed.add('lesson-01');
+      localStorage.setItem('completedLessons', JSON.stringify(Array.from(completed)));
+      
+      const scores = JSON.parse(localStorage.getItem('lessonScores') || '{}');
+      scores['lesson-01'] = { score: score, total: QUIZ_CONFIG.questions.length, ts: Date.now() };
+      localStorage.setItem('lessonScores', JSON.stringify(scores));
+    } catch (err) {
+      console.warn('[Quiz] Legacy storage failed:', err);
+    }
 
     // Update UI
     document.getElementById('quiz-submit-btn').classList.add('hidden');
