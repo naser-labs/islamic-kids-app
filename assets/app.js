@@ -25,8 +25,8 @@
    */
   async function loadLessons() {
     const manifestUrl = window.withBase ? 
-      window.withBase('assets/lessons.json') : 
-      'assets/lessons.json';
+      window.withBase('data/lessons.json') : 
+      'data/lessons.json';
     
     try {
       console.log('[loadLessons] Fetching from:', manifestUrl);
@@ -89,7 +89,25 @@
     writeLastLesson(id);
     document.getElementById('lesson-title').textContent = `${lesson.number}. ${lesson.title}`;
     document.getElementById('lesson-meta').textContent = `${lesson.minutes} min • ${lesson.tags.join(', ')}`;
-    document.getElementById('lesson-body').textContent = `This is a brief, friendly overview to introduce: ${lesson.title}.`;
+    // Try to load lesson content from a partial HTML if available
+    const contentUrl = window.withBase ? window.withBase(`lessons/content/${lesson.id}.html`) : `lessons/content/${lesson.id}.html`;
+    if (window.updateDebugInfo) {
+      window.updateDebugInfo({ lessonId: id, contentUrl });
+    }
+    
+    (async () => {
+      try {
+        const res = await fetch(contentUrl);
+        if (res.ok) {
+          const html = await res.text();
+          document.getElementById('lesson-body').innerHTML = html;
+        } else {
+          document.getElementById('lesson-body').textContent = `This is a brief, friendly overview to introduce: ${lesson.title}.`;
+        }
+      } catch {
+        document.getElementById('lesson-body').textContent = `This is a brief, friendly overview to introduce: ${lesson.title}.`;
+      }
+    })();
 
     const tagsEl = document.getElementById('lesson-tags');
     tagsEl.innerHTML = (lesson.tags||[]).map(t => `<span class="chip">${t}</span>`).join('');

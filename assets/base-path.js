@@ -71,22 +71,48 @@
       background: rgba(0, 0, 0, 0.9);
       color: #0f0;
       font-family: monospace;
-      font-size: 12px;
+      font-size: 11px;
       padding: 12px;
       border-radius: 4px;
       z-index: 99999;
-      max-width: 400px;
+      max-width: 450px;
+      max-height: 90vh;
+      overflow-y: auto;
       box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     `;
+    
+    // Check CSS load status
+    const cssLoaded = Array.from(document.styleSheets).some(sheet => {
+      try {
+        return sheet.href && (sheet.href.includes('styles.css') || sheet.href.includes('assets'));
+      } catch {
+        return false;
+      }
+    });
+    
+    const cssHrefs = Array.from(document.styleSheets)
+      .map(sheet => {
+        try {
+          return sheet.href ? new URL(sheet.href).pathname : '(inline)';
+        } catch {
+          return '(error reading)';
+        }
+      })
+      .join(', ');
     
     overlay.innerHTML = `
       <div style="margin-bottom: 8px; color: #fff; font-weight: bold;">🔍 DEBUG MODE</div>
       <div><strong>Base Path:</strong> "${info.basePath}"</div>
       <div><strong>Location:</strong> ${info.location}</div>
+      <div><strong>CSS Loaded:</strong> ${cssLoaded ? '✓' : '✗'}</div>
+      <div style="font-size: 9px; color: #999; margin-left: 12px;">${cssHrefs || 'none'}</div>
+      <div><strong>JS Loaded:</strong> ✓ (main.js, app.js)</div>
       <div><strong>Manifest URL:</strong> ${info.manifestUrl}</div>
       <div><strong>Lessons Count:</strong> ${info.lessonsCount}</div>
-      ${info.lastError ? `<div style="color: #f66; margin-top: 8px;"><strong>Last Error:</strong><br>${info.lastError}</div>` : ''}
-      <div style="margin-top: 8px; color: #999;">Remove ?debug=1 to hide</div>
+      ${info.lessonId ? `<div><strong>Lesson ID:</strong> ${info.lessonId}</div>` : ''}
+      ${info.contentUrl ? `<div><strong>Content URL:</strong> ${info.contentUrl}</div>` : ''}
+      ${info.lastError ? `<div style="color: #f66; margin-top: 8px;"><strong>Last Error:</strong><br><pre style="white-space: pre-wrap; font-size: 9px;">${info.lastError}</pre></div>` : ''}
+      <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #333; color: #999;">Remove ?debug=1 to hide</div>
     `;
     
     document.body.appendChild(overlay);
@@ -120,7 +146,7 @@
     window.__DEBUG_INFO = {
       basePath: BASE_PATH,
       location: window.location.pathname,
-      manifestUrl: withBase('assets/lessons.json'),
+      manifestUrl: withBase('data/lessons.json'),
       lessonsCount: '—',
       lastError: null
     };
@@ -136,7 +162,7 @@
   // Log initialization
   console.log('[base-path.js] Initialized with base:', BASE_PATH);
   console.log('[base-path.js] Sample paths:', {
-    'assets/lessons.json': withBase('assets/lessons.json'),
+    'data/lessons.json': withBase('data/lessons.json'),
     'lessons/': withBase('lessons/'),
     'lessons/lesson.html?id=1': withBase('lessons/lesson.html?id=1')
   });

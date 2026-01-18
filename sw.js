@@ -41,7 +41,7 @@ const CORE_ASSETS = [
   withBase('assets/app.js'),
   withBase('assets/main.js'),
   withBase('assets/base-path.js'),
-  withBase('assets/lessons.json'),
+  withBase('data/lessons.json'),
   withBase('manifest.webmanifest'),
   withBase('assets/icon.svg'),
   withBase('assets/icon-maskable.svg')

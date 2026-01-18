@@ -8,10 +8,10 @@ function fail(msg){
 }
 
 function checkLessons(){
-  const p = path.join(__dirname, '..', 'assets', 'lessons.json');
+  const p = path.join(__dirname, '..', 'data', 'lessons.json');
   const raw = fs.readFileSync(p, 'utf8');
   let data;
-  try { data = JSON.parse(raw); } catch(e){ fail('assets/lessons.json is not valid JSON'); }
+  try { data = JSON.parse(raw); } catch(e){ fail('data/lessons.json is not valid JSON'); }
   if (typeof data.version !== 'number') fail('lessons.json: missing numeric version');
   if (!Array.isArray(data.lessons)) fail('lessons.json: lessons must be an array');
   for (const l of data.lessons){

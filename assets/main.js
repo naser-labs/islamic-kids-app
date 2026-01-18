@@ -9,6 +9,7 @@
     allLessons: [],
     currentSearch: '',
     currentCategory: 'all',
+    currentMode: 'all', // 'all' or 'quiz'
     completedLessons: new Set(),
   };
 
@@ -32,6 +33,12 @@
     const searchLower = search.toLowerCase().trim();
     
     return state.allLessons.filter(lesson => {
+      // Mode filter (quiz mode shows only lessons with quiz data)
+      if (state.currentMode === 'quiz') {
+        // For now, all lessons have a quiz, but this is future-proof
+        // if (!lesson.quiz || !lesson.quiz.length) return false;
+      }
+      
       // Category filter
       if (!lessonMatchesCategory(lesson, category)) return false;
       
@@ -168,7 +175,7 @@
 
   async function loadLessons() {
     // Use withBase() to get correct path for GitHub Pages
-    const manifestUrl = window.withBase ? window.withBase('assets/lessons.json') : 'assets/lessons.json';
+    const manifestUrl = window.withBase ? window.withBase('data/lessons.json') : 'data/lessons.json';
     
     try {
       console.log('[loadLessons] Fetching from:', manifestUrl);
@@ -197,6 +204,28 @@
   }
 
   async function init() {
+    console.log('[TeenDeen] main.js loaded on', location.pathname);
+    
+    // Check for quiz mode via URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('mode') === 'quiz') {
+      state.currentMode = 'quiz';
+      
+      // Update page title and hero
+      const heroTitle = document.querySelector('.hero-title');
+      if (heroTitle) {
+        heroTitle.textContent = 'Quizzes';
+      }
+      const heroSubtitle = document.querySelector('.hero-subtitle');
+      if (heroSubtitle) {
+        heroSubtitle.textContent = 'Test your knowledge with self-check quizzes for every lesson.';
+      }
+      const sectionTitle = document.querySelector('.section-title');
+      if (sectionTitle && sectionTitle.textContent.includes('Browse')) {
+        sectionTitle.textContent = 'All Quizzes';
+      }
+    }
+    
     try {
       // Register service worker
       if ('serviceWorker' in navigator) {
