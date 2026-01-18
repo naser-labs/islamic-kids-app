@@ -1,0 +1,24 @@
+{
+  "quests": [
+    { "id": "quest-01", "text": "Before praying today, pause for 1 second and check your intention. Are you praying for Allah?" },
+    { "id": "quest-02", "text": "Ask someone you trust one question about Islam that you've been wondering about." },
+    { "id": "quest-03", "text": "Read a Surah from the Qur'an (even a short one) and think about its meaning." },
+    { "id": "quest-04", "text": "Do one kind deed for someone without telling anyone else about it." },
+    { "id": "quest-05", "text": "Make dua for someone who has wronged you or been difficult to deal with." },
+    { "id": "quest-06", "text": "Thank Allah out loud for three specific blessings you often take for granted." },
+    { "id": "quest-07", "text": "Pray Sunnah prayers before or after one of your obligatory prayers today." },
+    { "id": "quest-08", "text": "Memorize the meaning of one verse from the Qur'an that you already know." },
+    { "id": "quest-09", "text": "Say something kind to a family member, even if you don't feel like it." },
+    { "id": "quest-10", "text": "Fast from backbiting and gossip for the entire day—speak only good or remain silent." },
+    { "id": "quest-11", "text": "Give charity, even if it's just a small amount. Every act counts." },
+    { "id": "quest-12", "text": "Seek forgiveness from Allah sincerely for something specific you regret." },
+    { "id": "quest-13", "text": "Lower your gaze when you're tempted to look at something inappropriate." },
+    { "id": "quest-14", "text": "Listen to or read a reminder about death and the Hereafter." },
+    { "id": "quest-15", "text": "Reflect on one hadith or Qur'an verse and write one sentence about how it applies to your life." },
+    { "id": "quest-16", "text": "Help someone with a task without expecting anything in return." },
+    { "id": "quest-17", "text": "Perform wudu with focus and mindfulness, knowing it washes away sins." },
+    { "id": "quest-18", "text": "Make the intention to speak the truth today, even when it's difficult." },
+    { "id": "quest-19", "text": "Smile at someone as an act of charity." },
+    { "id": "quest-20", "text": "Teach someone younger than you something beneficial about Islam." }
+  ]
+}
