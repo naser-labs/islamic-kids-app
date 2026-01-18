@@ -1,136 +1,136 @@
 {
   "lessonId": "lesson-01",
-  "title": "Lesson 1 Quiz: Who Created Me?",
+  "title": "Lesson 1 Quiz: Actions Are By Intentions",
   "questions": [
     {
       "id": "l1-q1",
       "type": "multiple-choice",
-      "question": "What does it mean when we say Allah is Al-Khaliq?",
+      "question": "According to the hadith, what determines the value of an action?",
       "choices": [
-        "Allah is the One who provides food only",
-        "Allah is the Creator of everything",
-        "Allah is an angel who writes deeds",
-        "Allah is only the creator of humans"
+        "How big or public the action is",
+        "The intention behind the action",
+        "How many people praise it",
+        "How hard the action feels"
       ],
       "correctIndex": 1,
-      "explanation": "Al-Khaliq means The Creator—Allah created everything, not just humans."
+      "explanation": "The Prophet ﷺ taught: actions are judged by intentions, and everyone gets what they intended."
     },
     {
       "id": "l1-q2",
       "type": "multiple-choice",
-      "question": "Which statement best fits Islamic belief about why we exist?",
+      "question": "In the migration example, why was one person’s migration considered for Allah and His Messenger?",
       "choices": [
-        "To become famous and leave a legacy",
-        "To enjoy life with no rules",
-        "To worship Allah and live with purpose",
-        "To follow whatever society says is right"
+        "Because it was more far away",
+        "Because he moved with friends",
+        "Because his intention was for Allah and His Messenger",
+        "Because he posted about it"
       ],
       "correctIndex": 2,
-      "explanation": "Islam teaches we were created to worship Allah and live a meaningful life guided by Him."
+      "explanation": "The hadith shows the same action can differ in reward based on intention: for Allah vs. for worldly reasons."
     },
     {
       "id": "l1-q3",
       "type": "multiple-choice",
-      "question": "Which is the strongest everyday sign that things don’t happen by pure accident?",
+      "question": "What does the lesson say Allah looks at first?",
       "choices": [
-        "A random scribble on paper",
-        "A detailed phone app with many features",
-        "A broken chair",
-        "A messy room"
+        "Your followers",
+        "Your heart (intention)",
+        "Your grades",
+        "Your schedule"
       ],
       "correctIndex": 1,
-      "explanation": "Complex design points to intelligence and planning—like an app needing a developer."
+      "explanation": "Allah looks at your heart before He looks at your actions."
     },
     {
       "id": "l1-q4",
       "type": "multiple-choice",
-      "question": "In Islam, what is 'fitrah'?",
+      "question": "If you do a good deed mainly to be seen and praised, what is the outcome?",
       "choices": [
-        "A special kind of charity",
-        "A natural sense that Allah is real and truth exists",
-        "A rule about fasting",
-        "A type of prayer"
+        "You get full reward from Allah",
+        "You only get people’s praise",
+        "You automatically get a badge",
+        "It counts as worship no matter what"
       ],
       "correctIndex": 1,
-      "explanation": "Fitrah is the natural disposition Allah placed in us—recognizing truth and the Creator."
+      "explanation": "Doing good for show brings only people’s praise. Real reward depends on sincerity for Allah."
     },
     {
       "id": "l1-q5",
       "type": "multiple-choice",
-      "question": "If someone says, “I only pray when people are watching,” what’s the main issue?",
+      "question": "Why did many scholars place this hadith at the beginning of their books?",
       "choices": [
-        "They are praying too fast",
-        "They are doing riya’ (showing off in worship)",
-        "They are praying at the wrong time",
-        "They should pray only at home"
+        "It’s short and easy to memorize",
+        "To remind readers that intention comes first",
+        "They didn’t have other hadiths",
+        "Because it was trending"
       ],
       "correctIndex": 1,
-      "explanation": "Riya’ is showing off—worship is for Allah, not for people’s approval."
+      "explanation": "Scholars wanted to emphasize that the intention is foundational—without it, actions lose value."
     },
     {
       "id": "l1-q6",
       "type": "multiple-choice",
-      "question": "Which is the BEST way to build sincerity in worship?",
+      "question": "Which Qur’an message aligns with this lesson?",
       "choices": [
-        "Think about what people will say about you",
-        "Hide every good deed so nobody knows",
-        "Remind yourself: “Allah sees me and I’m doing this for Him”",
-        "Only worship when you feel motivated"
+        "Do actions only in public",
+        "Islam is about sincerity and worshipping Allah alone",
+        "Seek praise from people",
+        "Hide your faith always"
       ],
-      "correctIndex": 2,
-      "explanation": "Sincerity grows when you focus on Allah’s awareness and your intention (niyyah)."
+      "correctIndex": 1,
+      "explanation": "Qur’an verses in the lesson stress sincere worship of Allah alone—not for show."
     },
     {
       "id": "l1-q7",
       "type": "multiple-choice",
-      "question": "Which phrase best describes Tawheed?",
+      "question": "What dangerous habit can quietly destroy good deeds?",
       "choices": [
-        "Believing Allah has partners who help Him",
-        "Believing only Allah deserves worship",
-        "Believing angels control the universe",
-        "Believing you can worship anything as long as you are sincere"
+        "Sleeping early",
+        "Riya’ (showing off)",
+        "Studying Islam",
+        "Helping others"
       ],
       "correctIndex": 1,
-      "explanation": "Tawheed is the oneness of Allah—He alone deserves worship and has no partners."
+      "explanation": "The lesson warns about riya’—doing good deeds to impress people instead of pleasing Allah."
     },
     {
       "id": "l1-q8",
       "type": "multiple-choice",
-      "question": "Which action matches the idea of living with purpose?",
+      "question": "Which everyday check helps keep sincerity?",
       "choices": [
-        "Following trends even if they conflict with Islam",
-        "Making choices that please Allah—even when it’s hard",
-        "Only caring about grades and money",
-        "Avoiding all challenges and responsibility"
+        "Ask: ‘Who will like this?’",
+        "Ask: ‘Who am I really doing this for?’",
+        "Post it first, think later",
+        "Wait until you feel motivated"
       ],
       "correctIndex": 1,
-      "explanation": "Purpose means aligning your choices with Allah’s guidance, not just convenience or trends."
+      "explanation": "The lesson’s practical advice: pause and ask who you’re doing it for—make it for Allah."
     },
     {
       "id": "l1-q9",
       "type": "multiple-choice",
-      "question": "What is the most accurate Islamic view of Allah’s knowledge?",
+      "question": "Pick the sincere intention for praying:",
       "choices": [
-        "Allah knows some things, but not everything",
-        "Allah only knows what happens in the future",
-        "Allah knows everything—seen and unseen",
-        "Allah learns new information over time"
+        "Because people might be watching",
+        "To impress relatives",
+        "Because Allah deserves worship",
+        "To get more likes"
       ],
       "correctIndex": 2,
-      "explanation": "Allah is Al-‘Aleem: His knowledge is complete and perfect."
+      "explanation": "Prayer is sincere when done because Allah deserves worship—not for people’s eyes."
     },
     {
       "id": "l1-q10",
       "type": "multiple-choice",
-      "question": "What should you do BEFORE you start praying to check your intention?",
+      "question": "Which statement best summarizes the lesson’s key takeaway?",
       "choices": [
-        "Check your phone notifications",
-        "Pause and ask: “Am I doing this because Allah commanded it, for Allah?”",
-        "Make sure someone is watching",
-        "Wait until you feel like it"
+        "Actions matter even with wrong intentions",
+        "Intention transforms normal actions into worship",
+        "Only big actions count",
+        "Small actions don’t matter"
       ],
       "correctIndex": 1,
-      "explanation": "A quick intention check helps protect sincerity and reminds you worship is for Allah."
+      "explanation": "Your intention is what turns everyday actions into worship and brings reward from Allah."
     }
   ]
 }
