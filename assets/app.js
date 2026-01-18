@@ -38,7 +38,7 @@
     
     try {
       console.log('[loadLessons] Fetching from:', manifestUrl);
-      const res = await fetch(manifestUrl);
+      const res = await fetch(manifestUrl, { cache: 'no-store' });
       
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}: ${res.statusText}`);
@@ -120,7 +120,7 @@
     // Load lesson content
     (async () => {
       try {
-        const res = await fetch(contentUrl);
+        const res = await fetch(contentUrl, { cache: 'no-store' });
         if (res.ok) {
           const html = await res.text();
           document.getElementById('lesson-body').innerHTML = html;

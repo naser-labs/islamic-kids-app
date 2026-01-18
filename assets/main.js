@@ -202,7 +202,7 @@
     
     try {
       console.log('[loadLessons] Fetching from:', manifestUrl);
-      const res = await fetch(manifestUrl);
+      const res = await fetch(manifestUrl, { cache: 'no-store' });
       
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}: ${res.statusText} - Failed to load ${manifestUrl}`);
