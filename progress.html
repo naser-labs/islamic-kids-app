@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="site-base" content="/islamic-kids-app">
+  <title>My Progress | Teen Deen</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#ffd166">
+  <link rel="apple-touch-icon" href="assets/icon.svg">
+  <meta name="description" content="Track your learning progress and see which lessons you've completed.">
+  <script src="assets/base-path.js"></script>
+</head>
+<body data-page="progress">
+  <header class="site-header">
+    <nav class="navbar">
+      <div class="navbar-brand">Teen Deen</div>
+      <nav class="navbar-nav" aria-label="Primary navigation">
+        <a href="./" class="nav-pill">Discover</a>
+        <a href="lessons/" class="nav-pill">Lessons</a>
+        <a href="lessons/?mode=quiz" class="nav-pill">Quizzes</a>
+        <a href="parents.html" class="nav-pill">Parents</a>
+        <a href="progress.html" class="nav-pill" aria-current="page">Progress</a>
+      </nav>
+      <div class="navbar-right">
+        <a href="lessons/" class="cta-btn">Continue Learning</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Your Progress</h1>
+        <p class="hero-subtitle">Track your learning journey and celebrate your achievements.</p>
+      </div>
+    </section>
+
+    <!-- PROGRESS STATS -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2 class="section-title">Learning Stats</h2>
+      </div>
+      <div class="cards-grid">
+        <div class="card">
+          <h3 class="text-primary" id="completed-count">0</h3>
+          <p class="card-description">Lessons Completed</p>
+        </div>
+        <div class="card">
+          <h3 class="text-primary" id="completion-percentage">0%</h3>
+          <p class="card-description">Course Progress</p>
+        </div>
+        <div class="card">
+          <h3 class="text-primary" id="quiz-average">—</h3>
+          <p class="card-description">Average Quiz Score</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPLETED LESSONS -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2 class="section-title">Completed Lessons</h2>
+      </div>
+      <div class="cards-grid" id="completed-lessons-grid">
+        <div class="no-lessons">
+          <p class="no-lessons-title">No lessons completed yet</p>
+          <p class="no-lessons-text">Start learning to track your progress here.</p>
+          <a href="lessons/" class="card-btn btn-inline" style="margin-top: 16px;">Browse Lessons →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEXT STEPS -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2 class="section-title">Continue Learning</h2>
+      </div>
+      <div class="card">
+        <h3 class="text-primary">Keep Going!</h3>
+        <p class="card-description">Your progress is saved locally on this device. Complete more lessons to earn more achievements.</p>
+        <a href="lessons/" class="card-btn btn-inline" style="margin-top: 12px;">Browse All Lessons →</a>
+      </div>
+    </section>
+
+    <!-- PRIVACY NOTE -->
+    <section class="content-section">
+      <div class="card">
+        <h3 class="text-primary">🔒 Your Privacy</h3>
+        <p class="card-description">All progress is stored locally on your device. No data is sent to any server. Clearing your browser data will reset your progress.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>Keep learning and growing. Every lesson brings you closer to understanding.</p>
+    </div>
+  </footer>
+
+  <script src="assets/app.js" defer></script>
+  <script src="assets/progress.js" defer></script>
+</body>
+</html>
