@@ -23,6 +23,10 @@
     'lesson-01': {
       male: 'lesson-01-intentions-male.mp3',
       female: 'lesson-01-intentions-female.mp3'
+    },
+    'lesson-02': {
+      male: 'lesson-02-importance-of-knwolege-male.mp3',
+      female: 'lesson-02-importance-of-knwolege-female.mp3'
     }
     // Add more lessons here as needed
   };
