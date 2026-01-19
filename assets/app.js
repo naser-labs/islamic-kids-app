@@ -117,9 +117,9 @@
           </select>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px; width: 100%; flex-wrap: wrap;">
           <label style="display: block; font-weight: 600; font-size: 0.95em; color: var(--color-text); white-space: nowrap;">🎧 Listen:</label>
-          <audio id="lesson-audio" controls preload="none">
+          <audio id="lesson-audio" controls preload="metadata" playsinline crossorigin="anonymous" style="flex: 1; min-width: 200px;">
             <source id="audio-source" src="" type="audio/mpeg">
             Your browser does not support the audio element.
           </audio>

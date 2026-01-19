@@ -684,6 +684,53 @@ button, .btn, .cta-btn, .btn-inline {
    AUDIO PLAYER STYLES
    ============================================================ */
 
+.audio-player-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: var(--color-surface, #fef8f0);
+  border: 1px solid var(--color-border, rgba(0,0,0,0.08));
+  border-radius: var(--radius-md, 12px);
+}
+
+.audio-player-wrapper > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.audio-player-wrapper label {
+  font-weight: 600;
+  color: var(--color-text, #2f1b0f);
+  font-size: 0.95em;
+}
+
+#narrator-select {
+  padding: 8px 12px;
+  border: 2px solid var(--color-border, rgba(0,0,0,0.08));
+  border-radius: var(--radius-sm, 8px);
+  background: var(--color-bg, #fff);
+  color: var(--color-text, #2f1b0f);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: all 150ms ease;
+  min-width: 120px;
+}
+
+#narrator-select:hover {
+  border-color: var(--color-primary, #ff9f43);
+  background: var(--color-bg-warm, #fff7ec);
+}
+
+#narrator-select:focus {
+  outline: none;
+  border-color: var(--color-accent, #06d6a0);
+  box-shadow: 0 0 0 3px rgba(6, 214, 160, 0.1);
+}
+
 #audio-player-container {
   width: 100%;
   max-width: 100%;
@@ -694,14 +741,57 @@ button, .btn, .cta-btn, .btn-inline {
   width: 100% !important;
   max-width: 100% !important;
   height: auto;
+  min-height: 40px;
   border-radius: var(--radius-md);
   font-family: inherit;
 }
 
+.audio-error {
+  padding: 12px 16px;
+  background: rgba(239, 71, 111, 0.1);
+  border: 1px solid rgba(239, 71, 111, 0.3);
+  border-radius: var(--radius-sm, 8px);
+  color: #ef476f;
+  font-size: 0.9em;
+  display: none;
+}
+
+.audio-error.visible {
+  display: block;
+}
+
+.audio-fallback {
+  display: none;
+  padding: 8px 12px;
+  background: var(--color-primary, #ff9f43);
+  color: #fff;
+  border-radius: var(--radius-sm, 8px);
+  text-decoration: none;
+  font-size: 0.9em;
+  text-align: center;
+  transition: all 150ms ease;
+}
+
+.audio-fallback:hover {
+  background: var(--color-secondary, #ffd166);
+  color: var(--color-text, #2f1b0f);
+}
+
 /* Ensure audio controls are always visible on mobile */
 @media (max-width: 768px) {
+  .audio-player-wrapper {
+    padding: 12px;
+    gap: 12px;
+  }
+  
   #audio-player-container audio {
-    height: 40px;
+    min-height: 40px;
+  }
+  
+  #narrator-select {
+    min-width: 100px;
+    font-size: 0.9em;
+    padding: 6px 10px;
   }
 }
 
