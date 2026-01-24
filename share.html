@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="site-base" content="/islamic-kids-app">
+  <title>Share Progress | Teen Deen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#ffd166">
+  <link rel="apple-touch-icon" href="assets/icon.svg">
+  <meta name="description" content="Share your Teen Deen progress with parents, mentors, or teachers.">
+  <script src="assets/base-path.js"></script>
+</head>
+<body data-page="share">
+  <header class="site-header">
+    <nav class="navbar">
+      <div class="navbar-brand">Teen Deen</div>
+      <nav class="navbar-nav" aria-label="Primary navigation">
+        <a href="./" class="nav-pill">Home</a>
+        <a href="lessons/" class="nav-pill">Short Lessons</a>
+        <a href="teen-issues.html" class="nav-pill">Teen Issues</a>
+        <a href="share.html" class="nav-pill" aria-current="page">Share Progress</a>
+        <a href="parents.html" class="nav-pill">Parents</a>
+        <a href="about.html" class="nav-pill">About</a>
+      </nav>
+      <button class="navbar-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navbar-drawer-menu">
+        <span>
+          <div></div>
+        </span>
+      </button>
+      <div class="navbar-right">
+        <a href="lessons/" class="cta-btn">Back to Lessons</a>
+      </div>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="navbar-drawer" id="navbar-drawer-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="navbar-drawer-content">
+        <div class="navbar-drawer-header">
+          <span style="font-weight: 600; color: var(--color-text);">Menu</span>
+          <button class="navbar-drawer-close" aria-label="Close menu">✕</button>
+        </div>
+        <nav class="navbar-drawer-nav" aria-label="Primary navigation">
+          <a href="./" class="nav-pill">Home</a>
+          <a href="lessons/" class="nav-pill">Short Lessons</a>
+          <a href="teen-issues.html" class="nav-pill">Teen Issues</a>
+          <a href="share.html" class="nav-pill" aria-current="page">Share Progress</a>
+          <a href="parents.html" class="nav-pill">Parents</a>
+          <a href="about.html" class="nav-pill">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Share Progress</h1>
+        <p class="hero-subtitle">Let your parents, mentors, or teachers see how you're doing.</p>
+      </div>
+    </section>
+
+    <!-- EXPLANATION -->
+    <section class="content-section" style="padding-top: 32px; padding-bottom: 16px;">
+      <div style="max-width: 700px; margin: 0 auto;">
+        <p style="font-size: 1.0625rem; line-height: 1.7; text-align: left; margin-bottom: 16px;">
+          Your quiz results are saved locally on your device. You can share them with someone you trust to show your progress and celebrate your learning journey.
+        </p>
+        <p style="font-size: 1.0625rem; line-height: 1.7; text-align: left; margin: 0;">
+          Choose how you'd like to share below:
+        </p>
+      </div>
+    </section>
+
+    <!-- PROGRESS SUMMARY CARD -->
+    <section class="content-section" style="padding-top: 16px; padding-bottom: 32px;">
+      <div style="max-width: 700px; margin: 0 auto;">
+        <div class="card" id="progress-summary-card">
+          <h2 style="margin-bottom: 16px; font-size: 1.5rem;">Your Progress Summary</h2>
+          
+          <!-- Loading State -->
+          <div id="loading-state" style="text-align: center; padding: 24px;">
+            <p style="color: var(--color-text-muted); margin: 0;">Loading your progress...</p>
+          </div>
+
+          <!-- No Results State -->
+          <div id="no-results-state" style="display: none; text-align: center; padding: 24px; background: var(--color-bg-warm); border-radius: var(--radius-md); border: 2px dashed var(--color-border);">
+            <p style="color: var(--color-text-muted); margin: 0 0 16px 0; font-size: 1.1rem;">📚 No quiz results yet</p>
+            <p style="color: var(--color-text-muted); margin: 0 0 20px 0;">Complete a quiz first to see your progress here.</p>
+            <a href="lessons/" class="cta-btn" style="text-decoration: none;">Start a Lesson</a>
+          </div>
+
+          <!-- Results State -->
+          <div id="results-state" style="display: none;">
+            <div id="results-list" style="margin-bottom: 24px;">
+              <!-- Populated by JavaScript -->
+            </div>
+
+            <!-- Share Message Preview -->
+            <div style="margin-bottom: 24px;">
+              <h3 style="font-size: 1.125rem; margin-bottom: 12px;">📝 Share Message Preview</h3>
+              <textarea id="share-message" readonly style="width: 100%; min-height: 150px; padding: 16px; border: 2px solid var(--color-border); border-radius: var(--radius-md); font-family: inherit; font-size: 0.95rem; line-height: 1.6; resize: vertical; background: var(--color-surface);"></textarea>
+            </div>
+
+            <!-- Share Buttons -->
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+              <button id="share-web-btn" class="cta-btn" style="display: none;">
+                📤 Share
+              </button>
+              <button id="copy-btn" class="btn-inline">
+                📋 Copy Message
+              </button>
+              <a id="sms-btn" class="btn-inline" style="text-decoration: none;">
+                💬 Text Message
+              </a>
+              <a id="email-btn" class="btn-inline" style="text-decoration: none;">
+                ✉️ Email
+              </a>
+            </div>
+
+            <!-- Feedback Message -->
+            <div id="feedback-message" style="display: none; margin-top: 16px; padding: 12px; border-radius: var(--radius-md); text-align: center; font-weight: 600;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="content-section" style="padding-top: 16px; padding-bottom: 40px;">
+      <div style="max-width: 700px; margin: 0 auto;">
+        <h2 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;">How This Works</h2>
+        <div class="cards-grid" style="gap: 16px;">
+          <div class="card" style="padding: 20px;">
+            <h3 class="text-primary" style="font-size: 1.125rem; margin-bottom: 8px;">🔒 Privacy First</h3>
+            <p style="margin: 0; line-height: 1.7; font-size: 0.95rem;">Your results stay on your device. Nothing is sent to our servers. You control what you share and with whom.</p>
+          </div>
+          <div class="card" style="padding: 20px;">
+            <h3 class="text-primary" style="font-size: 1.125rem; margin-bottom: 8px;">✅ Local Storage</h3>
+            <p style="margin: 0; line-height: 1.7; font-size: 0.95rem;">Quiz scores are saved in your browser's local storage. If you clear your browser data, your progress will be reset.</p>
+          </div>
+          <div class="card" style="padding: 20px;">
+            <h3 class="text-primary" style="font-size: 1.125rem; margin-bottom: 8px;">📱 Multiple Ways to Share</h3>
+            <p style="margin: 0; line-height: 1.7; font-size: 0.95rem;">Use Web Share (if supported), copy the message, send via text, or email. Choose what works best for you.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>
+        <a href="lessons/" style="color: inherit; margin: 0 8px;">Short Lessons</a> • 
+        <a href="teen-issues.html" style="color: inherit; margin: 0 8px;">Teen Issues</a> • 
+        <a href="parents.html" style="color: inherit; margin: 0 8px;">Parents</a> • 
+        <a href="about.html" style="color: inherit; margin: 0 8px;">About</a>
+      </p>
+      <p style="margin-top: 8px; font-size: 0.875rem; opacity: 0.7;">Privacy-first. Ad-free. No tracking.</p>
+    </div>
+  </footer>
+
+  <script src="assets/mobile-nav.js"></script>
+  <script src="assets/share-progress.js"></script>
+</body>
+</html>

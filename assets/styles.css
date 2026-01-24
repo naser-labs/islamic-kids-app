@@ -365,24 +365,33 @@ button, .btn, .cta-btn, .btn-inline {
 
 .cta-btn { 
   background: linear-gradient(135deg, var(--color-primary) 0%, #ffa940 100%); 
-  color: white; 
+  color: #ffffff !important; 
+  font-weight: 700;
   box-shadow: var(--shadow-sm); 
 }
 
 .cta-btn:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
+  background: linear-gradient(135deg, #f89030 0%, #f89030 100%);
+  color: #ffffff !important;
 }
 
 .cta-btn:active { 
   transform: translateY(-2px); 
   box-shadow: var(--shadow-md); 
   text-decoration: none; 
+  color: #ffffff !important;
 }
 
 .cta-btn:focus {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+  color: #ffffff !important;
+}
+
+.cta-btn:visited {
+  color: #ffffff !important;
 }
 
 .btn-inline { 
