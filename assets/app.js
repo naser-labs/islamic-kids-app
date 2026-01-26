@@ -44,11 +44,14 @@
   };
 
   async function loadLessons() {
+    // Get base path - support both withBase function and manual path construction
     let manifestUrl;
     if (window.withBase && typeof window.withBase === 'function') {
       manifestUrl = window.withBase('data/lessons.json');
     } else {
-      const base = window.BASE_PATH || '/islamic-kids-app';
+      // Fallback: detect GitHub Pages path from window.location
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+      const base = pathSegments[0] === 'islamic-kids-app' ? '/islamic-kids-app' : '';
       manifestUrl = `${base}/data/lessons.json`;
     }
     
@@ -61,20 +64,32 @@
       }
       
       const data = await res.json();
-      console.log('[loadLessons] Loaded', (data.lessons || []).length, 'lessons');
       
-      if (window.updateDebugInfo) {
-        window.updateDebugInfo({ lessonsCount: (data.lessons || []).length });
+      // Validate lessons data
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid lessons data format');
       }
       
-      return data.lessons || [];
+      const lessons = data.lessons || [];
+      
+      if (!Array.isArray(lessons)) {
+        throw new Error('Lessons data is not an array');
+      }
+      
+      console.log('[loadLessons] Loaded', lessons.length, 'lessons');
+      
+      if (window.updateDebugInfo) {
+        window.updateDebugInfo({ lessonsCount: lessons.length });
+      }
+      
+      return lessons;
       
     } catch (error) {
       console.error('[loadLessons] Error:', error);
       
       if (window.updateDebugInfo) {
         window.updateDebugInfo({ 
-          lastError: `${error.message}\n\nAttempted URL: ${manifestUrl}\nBase path: ${window.BASE_PATH || '(none)'}` 
+          lastError: `${error.message}\n\nAttempted URL: ${manifestUrl}\nBase path: ${window.BASE_PATH || '(auto-detected)'}` 
         });
       }
       
@@ -103,10 +118,14 @@
       return;
     }
 
-    // Resolve base path for GitHub Pages
+    // Resolve base path for GitHub Pages - consistent with other path resolution
     const getBasePath = () => {
-      const base = window.location.pathname.startsWith('/islamic-kids-app/') ? '/islamic-kids-app' : '';
-      return base;
+      if (window.withBase && typeof window.withBase === 'function') {
+        return window.withBase('');
+      }
+      // Detect GitHub Pages path from window.location
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+      return pathSegments[0] === 'islamic-kids-app' ? '/islamic-kids-app' : '';
     };
 
     const basePath = getBasePath();
@@ -123,7 +142,7 @@
 
         <div style="display: flex; align-items: center; gap: 8px; width: 100%; flex-wrap: wrap;">
           <label style="display: block; font-weight: 600; font-size: 0.95em; color: var(--color-text); white-space: nowrap;">🎧 Listen:</label>
-          <audio id="lesson-audio" controls preload="metadata" playsinline crossorigin="anonymous" style="flex: 1; min-width: 200px;">
+          <audio id="lesson-audio" controls preload="metadata" playsinline webkit-playsinline crossorigin="anonymous" style="flex: 1; min-width: 200px; max-width: 100%;">
             <source id="audio-source" src="" type="audio/mpeg">
             Your browser does not support the audio element.
           </audio>
@@ -171,12 +190,19 @@
         const audioUrl = `${basePath}/audio/${audioConfig[narrator]}`;
         audioElement.src = audioUrl;
         if (sourceElement) sourceElement.src = audioUrl;
-        if (fallbackLink) fallbackLink.href = audioUrl;
+        if (fallbackLink) {
+          fallbackLink.href = audioUrl;
+          fallbackLink.style.display = 'inline-block';
+        }
         console.log('[Audio] Set narrator to:', narrator, '| src:', audioUrl);
-        console.log('[Audio] src:', audioElement.src);
-        audioElement.load();
         clearError();
+        audioElement.load();
+        
+        // Run verification check (non-blocking)
         runHeadCheck();
+      } else {
+        console.warn('[Audio] No audio file found for narrator:', narrator);
+        showError(`Audio not available for ${narrator} narrator`);
       }
     };
 
@@ -189,12 +215,19 @@
       const currentTime = audioElement.currentTime;
       
       setAudioSource(e.target.value);
+      
+      // Restore playback position
       audioElement.currentTime = currentTime;
       
       if (wasPlaying) {
-        audioElement.play().catch(err => {
-          console.warn('[Audio] Auto-play after narrator change failed:', err);
-        });
+        // Use promise-based play with error handling
+        const playPromise = audioElement.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.warn('[Audio] Auto-play after narrator change failed:', err.message);
+            // Don't show error - user can manually click play
+          });
+        }
       }
     });
 
@@ -277,7 +310,9 @@
     if (window.withBase && typeof window.withBase === 'function') {
       contentUrl = window.withBase(`lessons/content/${lesson.id}.html`);
     } else {
-      const base = window.BASE_PATH || '/islamic-kids-app';
+      // Fallback: detect GitHub Pages path
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+      const base = pathSegments[0] === 'islamic-kids-app' ? '/islamic-kids-app' : '';
       contentUrl = `${base}/lessons/content/${lesson.id}.html`;
     }
     
@@ -300,14 +335,32 @@
         const res = await fetch(contentUrl, { cache: 'no-store' });
         if (res.ok) {
           const html = await res.text();
-          document.getElementById('lesson-body').innerHTML = html;
+          if (html && html.trim().length > 0) {
+            document.getElementById('lesson-body').innerHTML = html;
+          } else {
+            throw new Error('Empty content received');
+          }
         } else {
-          console.warn('[Content] Could not load:', contentUrl, res.status);
-          document.getElementById('lesson-body').textContent = `This is a brief, friendly overview to introduce: ${lesson.title}.`;
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         }
       } catch (err) {
-        console.warn('[Content] Load error:', err);
-        document.getElementById('lesson-body').textContent = `This is a brief, friendly overview to introduce: ${lesson.title}.`;
+        console.warn('[Content] Failed to load lesson content:', err.message);
+        const lessonBodyEl = document.getElementById('lesson-body');
+        if (lessonBodyEl) {
+          lessonBodyEl.innerHTML = `
+            <div style="padding: 20px; background: rgba(255, 209, 102, 0.1); border: 2px solid #ffd166; border-radius: var(--radius-md); text-align: center;">
+              <p style="color: var(--color-text); font-size: 1.025em; margin-bottom: 12px;">
+                ⚠️ Lesson content failed to load.
+              </p>
+              <p style="color: var(--color-text-muted); font-size: 0.95em; margin-bottom: 16px;">
+                Please refresh the page or try again later.
+              </p>
+              <button class="btn-inline" onclick="location.reload()" style="margin: 0 auto;">
+                🔄 Refresh Page
+              </button>
+            </div>
+          `;
+        }
       }
     })();
 

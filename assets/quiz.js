@@ -56,9 +56,53 @@
         const res = await fetch(dataUrl, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         quizData = await res.json();
+        
+        // Validate quiz data structure
+        if (!quizData || typeof quizData !== 'object') {
+          throw new Error('Invalid quiz data format');
+        }
+        
+        // Normalize question field (accept 'questions' or 'quiz' or 'items')
+        if (!quizData.questions && quizData.quiz) {
+          quizData.questions = quizData.quiz;
+        } else if (!quizData.questions && quizData.items) {
+          quizData.questions = quizData.items;
+        }
+        
+        // Validate questions array
+        if (!Array.isArray(quizData.questions) || quizData.questions.length === 0) {
+          throw new Error('No quiz questions found');
+        }
+        
+        // Validate each question has required fields
+        quizData.questions = quizData.questions.filter(q => {
+          if (!q.question || !q.choices || !Array.isArray(q.choices) || q.correctIndex === undefined) {
+            console.warn('[Quiz] Skipping invalid question:', q);
+            return false;
+          }
+          return true;
+        });
+        
+        if (quizData.questions.length === 0) {
+          throw new Error('No valid quiz questions after validation');
+        }
+        
       } catch (err) {
-        console.warn('[Quiz] No data quiz found for', lesson.id, '-', err.message);
-        renderGenericQuiz(optionsEl, resultEl, submitBtn, retryBtn, lesson, state, updateActions, reviewBtn, backTopBtn, ctaContainer, ctaButton, questionsWrapper);
+        console.warn('[Quiz] No quiz data found for', lesson.id, '-', err.message);
+        
+        // Show user-friendly message when quiz data is unavailable
+        if (ctaContainer) {
+          ctaContainer.innerHTML = `
+            <div style="text-align: center; padding: 24px;">
+              <p style="color: var(--color-text-muted); font-size: 1.025em; margin-bottom: 12px;">
+                ⚠️ Quiz questions are not yet available for this lesson.
+              </p>
+              <p style="color: var(--color-text-muted); font-size: 0.95em;">
+                Please check back later or continue with the next lesson.
+              </p>
+            </div>
+          `;
+        }
         return;
       }
 
@@ -118,8 +162,27 @@
       document.querySelectorAll('input[name="quiz"]').forEach(r => { r.checked = false; r.disabled = false; });
     };
 
-    if (submitBtn) {
-      submitBtn.onclick = () => {
+    // Remove duplicate event listeners
+    const newSubmitBtn = submitBtn ? submitBtn.cloneNode(true) : null;
+    const newRetryBtn = retryBtn ? retryBtn.cloneNode(true) : null;
+    const newReviewBtn = reviewBtn ? reviewBtn.cloneNode(true) : null;
+    const newBackTopBtn = backTopBtn ? backTopBtn.cloneNode(true) : null;
+
+    if (newSubmitBtn && submitBtn && submitBtn.parentNode) {
+      submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
+    }
+    if (newRetryBtn && retryBtn && retryBtn.parentNode) {
+      retryBtn.parentNode.replaceChild(newRetryBtn, retryBtn);
+    }
+    if (newReviewBtn && reviewBtn && reviewBtn.parentNode) {
+      reviewBtn.parentNode.replaceChild(newReviewBtn, reviewBtn);
+    }
+    if (newBackTopBtn && backTopBtn && backTopBtn.parentNode) {
+      backTopBtn.parentNode.replaceChild(newBackTopBtn, backTopBtn);
+    }
+
+    if (newSubmitBtn) {
+      newSubmitBtn.onclick = () => {
         const chosen = (document.querySelector('input[name="quiz"]:checked')||{}).value;
         if(!chosen){
           if (resultEl){
@@ -141,17 +204,19 @@
       };
     }
 
-    if (retryBtn) {
-      retryBtn.onclick = () => {
+    if (newRetryBtn) {
+      newRetryBtn.onclick = () => {
         resetUI();
         const certificateContainer = document.getElementById('certificate-container');
         if (certificateContainer) certificateContainer.innerHTML = '';
-        optionsEl.scrollIntoView({ behavior:'smooth', block:'start' });
+        setTimeout(() => {
+          optionsEl.scrollIntoView({ behavior:'smooth', block:'start' });
+        }, 100);
       };
     }
 
-    if (reviewBtn) {
-      reviewBtn.onclick = () => {
+    if (newReviewBtn) {
+      newReviewBtn.onclick = () => {
         if (state.incorrectIds.length === 0) {
           optionsEl.scrollIntoView({ behavior:'smooth', block:'start' });
           return;
@@ -162,9 +227,9 @@
       };
     }
 
-    if (backTopBtn) {
-      backTopBtn.onclick = () => {
-        optionsEl.scrollIntoView({ behavior:'smooth', block:'start' });
+    if (newBackTopBtn) {
+      newBackTopBtn.onclick = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       };
     }
   }
@@ -234,7 +299,17 @@
       });
     };
 
-    submitBtn.onclick = () => {
+    // Remove any existing event listeners to prevent duplicate handlers
+    const newSubmitBtn = submitBtn.cloneNode(true);
+    submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
+    const newRetryBtn = retryBtn.cloneNode(true);
+    retryBtn.parentNode.replaceChild(newRetryBtn, retryBtn);
+    const newReviewBtn = reviewBtn.cloneNode(true);
+    reviewBtn.parentNode.replaceChild(newReviewBtn, reviewBtn);
+    const newBackTopBtn = backTopBtn.cloneNode(true);
+    backTopBtn.parentNode.replaceChild(newBackTopBtn, backTopBtn);
+
+    newSubmitBtn.onclick = () => {
       const answers = {};
       let allAnswered = true;
 
@@ -307,18 +382,31 @@
       resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
-    reviewBtn.onclick = () => {
+    newReviewBtn.onclick = () => {
       state.hasReviewed = true;
-      scrollToFirstIncorrect(state.incorrectIds);
+      if (state.incorrectIds && state.incorrectIds.length > 0) {
+        scrollToFirstIncorrect(state.incorrectIds);
+      } else {
+        // If all correct, scroll to top of quiz
+        optionsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     };
 
-    retryBtn.onclick = () => {
+    newRetryBtn.onclick = () => {
       resetUI();
-      optionsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Scroll to first question
+      setTimeout(() => {
+        optionsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     };
 
-    backTopBtn.onclick = () => {
-      quizSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    newBackTopBtn.onclick = () => {
+      // Scroll to the quiz section header
+      if (quizSection) {
+        quizSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     };
   }
 
