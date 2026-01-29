@@ -30,7 +30,7 @@
     },
     'lesson-03': {
       male: 'lesson-03-islamic-belief-male.mp3',
-      female: 'lesson-03-islamic-belief-male.mp3'
+      female: 'lesson-03-islamic-belief-female.mp3'
     }
     // Add more lessons here as needed
   };
