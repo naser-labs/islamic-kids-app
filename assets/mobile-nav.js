@@ -29,6 +29,10 @@
 
     console.log('[MobileNav] All required elements found, initializing...');
 
+    // Log viewport width for debugging
+    console.log('[MobileNav] Current viewport width:', window.innerWidth, 'px');
+    console.log('[MobileNav] Hamburger should be visible:', window.innerWidth <= 768 ? 'YES' : 'NO (desktop mode)');
+
     // State: track scroll position for iOS Safari
     let scrollY = 0;
 

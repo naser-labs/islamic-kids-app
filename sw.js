@@ -1,9 +1,9 @@
 /**
- * SERVICE WORKER - GitHub Pages compatible (v1.1.3)
+ * SERVICE WORKER - GitHub Pages compatible (v1.1.4)
  * Handles caching for both local dev and GitHub Pages deployment
  */
 
-const CACHE_VERSION = 'v1.1.3';
+const CACHE_VERSION = 'v1.1.4';
 const CACHE_NAME = `islamic-kids-cache-${CACHE_VERSION}`;
 
 // Detect base path from service worker scope
